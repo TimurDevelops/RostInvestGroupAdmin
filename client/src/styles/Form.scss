@@ -1,0 +1,91 @@
+@import "Colors";
+
+// FORM
+.inputs-wrapper {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.form-group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.form-group.flex {
+  display: flex;
+  padding-top: 0;
+  margin-top: 0;
+
+  .form-label{
+    position: relative;
+    padding-top: 5px;
+  }
+  .form-field{
+    width: 20px;
+    margin-left: 15px;
+
+  }
+}
+
+.form-field {
+  width: 100%;
+  border: 1px solid $gray;
+  outline: 0;
+  font-size: 1.3rem;
+  padding: 7px 15px;
+  margin: 7px 0;
+  box-sizing: border-box;
+  background: transparent;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ .form-label {
+    font-size: 1rem;
+    cursor: text;
+    top: 33px;
+    left: 15px;
+  }
+}
+
+.form-label {
+  top: 0;
+  position: absolute;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: $gray;
+}
+
+.form-field:focus {
+  ~ .form-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    transition: 0.2s;
+    color: $primary;
+  }
+
+  border-width: 1px;
+  border-image: linear-gradient(to right, $primary, $secondary) 1;
+}
+
+.form-field {
+  &:required, &:invalid {
+    box-shadow: none;
+  }
+}
+
+.submit-btn-wrapper {
+  display: flex;
+  align-content: center;
+  justify-content: left;
+}

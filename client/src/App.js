@@ -10,6 +10,7 @@ import Login from "./components/login/Login";
 import {v4 as uuidv4} from 'uuid';
 
 import './App.css';
+import './Common.scss';
 
 const App = () => {
   const {user, setUser, unsetUser} = useUser()
@@ -29,30 +30,26 @@ const App = () => {
 
   return (
     <div className="app">
-      <body className="app-body">
-      <Router>
-        <Routes>
-          {/* Sign In Page */}
-          <Route exact path="/login"
-                 render={(props) =>
-                   <Login {...props} setAuth={setAuth} setAlert={setAlert} setUser={setUser} auth={auth}/>
-                 }/>
+      <div className="app-body">
 
-          {/* 404 Page */}
-          <Route path="*" render={
-            () => {
-              if (auth.isAuthenticated) {
-                return <Navigate to="/lessons-view"/>
-              } else {
-                return <Navigate to="/login"/>
-              }
-            }
-          }/>
-        </Routes>
-      </Router>
+        <Router>
+          <Routes>
+            {/* Sign In Page */}
+            <Route path="/login"
+                   element={
+                     <Login setAuth={setAuth} setAlert={setAlert} setUser={setUser} auth={auth}/>
+                   }/>
+
+            {/* 404 Page */}
+            <Route path="*" element={(
+              auth.isAuthenticated ? <Navigate to="/not-found"/> : <Navigate to="/login"/>
+            )}/>
+
+          </Routes>
+        </Router>
 
 
-      </body>
+      </div>
     </div>
   );
 };
