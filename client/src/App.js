@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 
 import useUser from "./utils/useUser";
 
 // import PrivateRoute from "./components/ui/PrivateRoute";
+import Alert from "./components/ui/Alert";
 
 import Login from "./components/login/Login";
 
@@ -11,6 +12,7 @@ import {v4 as uuidv4} from 'uuid';
 
 import './App.css';
 import './Common.scss';
+import AlertTypes from "./components/ui/AlertTypes";
 
 const App = () => {
   const {user, setUser, unsetUser} = useUser()
@@ -28,9 +30,11 @@ const App = () => {
     setAlerts(alerts => alerts.filter((alert) => alert.id !== id));
   }
 
+
   return (
     <div className="app">
       <div className="app-body">
+        <Alert alerts={alerts}/>
 
         <Router>
           <Routes>

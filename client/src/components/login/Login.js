@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 import api from "../../utils/api";
 
 import "./Login.scss"
+import AlertTypes from "../ui/AlertTypes";
 
 const loginUser = async ({credentials}) => {
   try {
@@ -15,20 +16,27 @@ const loginUser = async ({credentials}) => {
 }
 
 const Login = ({setUser, setAuth, setAlert}) => {
+
   const navigate = useNavigate();
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
 
   const outputErrors = (errors) => {
-    errors.forEach(err => {
-      setAlert(err.msg, "danger")
-    })
+    try {
+      console.log(errors)
+      errors.forEach(err => {
+        setAlert(err.msg, AlertTypes.DANGER)
+      })
+    } catch (err) {
+      setAlert("Произошла непредвиденная ошибка!", AlertTypes.DANGER)
+    }
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     setAuth({isLoading: true, isAuthenticated: false});
     try {
+      console.log("auth")
       const user = await loginUser({
         credentials: {
           login,
