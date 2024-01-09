@@ -1,8 +1,8 @@
 from flask import Blueprint
 
-from db.db import DBHandler
-from models.models import User
-from utils.cipher import encrypt
+from backend.db.db import DBHandler
+from backend.models.models import User
+from backend.utils.cipher import encrypt
 
 auth_blueprint = Blueprint('user', __name__)
 
@@ -16,6 +16,3 @@ def user(username: str, password: str):
     db = DBHandler()
     db.session.add(User(username=username, password=password_hash))
     db.session.commit()
-
-
-

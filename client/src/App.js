@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 
 import useUser from "./utils/useUser";
@@ -12,7 +12,6 @@ import {v4 as uuidv4} from 'uuid';
 
 import './App.css';
 import './Common.scss';
-import AlertTypes from "./components/ui/AlertTypes";
 
 const App = () => {
   const {user, setUser, unsetUser} = useUser()

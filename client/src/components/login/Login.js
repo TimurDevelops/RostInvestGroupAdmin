@@ -8,7 +8,7 @@ import AlertTypes from "../ui/AlertTypes";
 
 const loginUser = async ({credentials}) => {
   try {
-    const res = await api.post("/auth/admin", credentials);
+    const res = await api.post("/auth", credentials);
     return res.data;
   } catch (e) {
     throw e.response.data.errors;
@@ -18,14 +18,13 @@ const loginUser = async ({credentials}) => {
 const Login = ({setUser, setAuth, setAlert}) => {
 
   const navigate = useNavigate();
-  const [login, setLogin] = useState();
+  const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
   const outputErrors = (errors) => {
     try {
-      console.log(errors)
-      errors.forEach(err => {
-        setAlert(err.msg, AlertTypes.DANGER)
+      errors.forEach(error => {
+        setAlert(error, AlertTypes.DANGER)
       })
     } catch (err) {
       setAlert("Произошла непредвиденная ошибка!", AlertTypes.DANGER)
@@ -38,7 +37,7 @@ const Login = ({setUser, setAuth, setAlert}) => {
     try {
       const user = await loginUser({
         credentials: {
-          login,
+          username,
           password,
         }
       });
@@ -68,10 +67,10 @@ const Login = ({setUser, setAuth, setAlert}) => {
 
             <div className="inputs-wrapper">
               <div className="form-group field">
-                <input autoComplete="off" type="input" className="form-field" placeholder="Логин" name="login"
-                       id="login"
-                       onChange={e => setLogin(e.target.value)} required/>
-                <label htmlFor="login" className="form-label">Логин</label>
+                <input autoComplete="off" type="input" className="form-field" placeholder="Логин" name="username"
+                       id="username"
+                       onChange={e => setUsername(e.target.value)} required/>
+                <label htmlFor="username" className="form-label">Логин</label>
               </div>
 
               <div className="form-group field">
