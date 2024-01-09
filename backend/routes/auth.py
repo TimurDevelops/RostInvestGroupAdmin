@@ -15,10 +15,13 @@ auth_blueprint = Blueprint('auth', __name__)
 @auth_blueprint.route('', methods=["POST"])
 @error_handler
 def authenticate_user():
+    """
+    Authenticate existing user.
+    """
     username = request.json["username"]
     password = request.json["password"]
     if not username or not password:
-        raise LoginException(message=WRONG_LOGIN_PASSWORD_MESSAGE)
+        raise LoginException(message=MISSING_LOGIN_PASSWORD_MESSAGE)
     db = DBHandler()
     user = db.session.query(User).filter(User.username == username).first()
     if not user:
