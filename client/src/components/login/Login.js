@@ -36,7 +36,6 @@ const Login = ({setUser, setAuth, setAlert}) => {
     e.preventDefault()
     setAuth({isLoading: true, isAuthenticated: false});
     try {
-      console.log("auth")
       const user = await loginUser({
         credentials: {
           login,

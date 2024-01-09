@@ -5,7 +5,7 @@ import configs from '../config.json';
 const serverUrl = configs.serverUrl;
 
 const api = axios.create({
-  baseURL: `${serverUrl}/api`,
+  baseURL: `${serverUrl}/`,
   headers: {
     'Content-Type': 'application/json'
   }
