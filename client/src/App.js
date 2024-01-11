@@ -12,6 +12,7 @@ import {v4 as uuidv4} from 'uuid';
 
 import './App.css';
 import './Common.scss';
+import NotFound from "./components/NotFound/NotFound";
 
 const App = () => {
   const {user, setUser, unsetUser} = useUser()
@@ -44,6 +45,9 @@ const App = () => {
                    }/>
 
             {/* 404 Page */}
+            <Route path="/not-found" element={<NotFound/>}/>
+
+            {/* Navigation */}
             <Route path="*" element={(
               auth.isAuthenticated ? <Navigate to="/not-found"/> : <Navigate to="/login"/>
             )}/>

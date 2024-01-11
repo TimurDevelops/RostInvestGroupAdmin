@@ -26,13 +26,13 @@ def create_user():
     user = db.session.query(User).filter(User.username == username).first()
     if user:
         raise InvalidFieldsException(message=USER_EXISTS_MESSAGE)
-    if MIN_PASSWORD_LENGTH < password:
+    if len(password) < MIN_PASSWORD_LENGTH:
         raise InvalidFieldsException(message=PASSWORD_TOO_SHORT_MESSAGE)
 
     password_hash = encrypt(password)
-    db = DBHandler()
     db.session.add(User(username=username, password=password_hash))
     db.session.commit()
 
-    encoded_jwt = jwt.encode({"user_id": user.id}, JWT_KEY, algorithm="HS256")
+    user = db.session.query(User).filter(User.username == username).first()
+    encoded_jwt = jwt.encode({"username": user.username, "id": user.id}, JWT_KEY, algorithm="HS256")
     return jsonify({"token": encoded_jwt}), 200

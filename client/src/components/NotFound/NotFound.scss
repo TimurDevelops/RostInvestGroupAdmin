@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import "../../styles/Colors";
+
+.not-found-wrapper {
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+
+  .not-found-holder {
+    font-family: 'Manrope', sans-serif;
+    width: 80%;
+    margin: auto;
+    padding-bottom: 10%;
+
+    .not-found-tag {
+      font-size: 8rem;
+      font-weight: bolder;
+      color: $bg-gray;
+      line-height: 7rem;
+    }
+
+    .not-found-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 3rem;
+      color: $tag;
+      letter-spacing: .1em;
+
+      span {
+        background: $label;
+      }
+    }
+
+    .not-found-link {
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+
+      margin: 1rem 0;
+      font-size: 2.1rem;
+      letter-spacing: .1em;
+
+      transition: all 50ms ease-in;
+      color: #4c6cec;
+    }
+
+    .not-found-link:hover {
+      color: #4C6CEC8E;
+    }
+    .not-found-link span {
+      display: inline-block;
+    }
+
+    .not-found-link span:after {
+      display: block;
+      content: "";
+      width: 0;
+      height: 1px;
+      background: #4c6cec5c;
+      transition: all 170ms ease-in;
+    }
+
+    .not-found-link:hover span:after {
+      width: 100%;
+    }
+  }
+}

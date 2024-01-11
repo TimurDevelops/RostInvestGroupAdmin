@@ -5,6 +5,7 @@ import api from "../../utils/api";
 
 import "./Login.scss"
 import AlertTypes from "../ui/AlertTypes";
+import Background from "../ui/Background";
 
 const loginUser = async ({credentials}) => {
   try {
@@ -53,10 +54,8 @@ const Login = ({setUser, setAuth, setAlert}) => {
 
   return (
     <div className="login-wrapper">
-      <div className="background-holder">
-
+      <Background>
         <div className="login-form-holder">
-
           <form className="login-form" onSubmit={e => handleSubmit(e)}>
 
             <div className="login-header">
@@ -87,12 +86,8 @@ const Login = ({setUser, setAuth, setAlert}) => {
             </div>
 
           </form>
-
         </div>
-
-
-        <div className="login-bg-colors"/>
-      </div>
+      </Background>
     </div>
   );
 }
@@ -105,7 +100,3 @@ Login.propTypes = {
 }
 
 export default Login;
-
-
-//
-//

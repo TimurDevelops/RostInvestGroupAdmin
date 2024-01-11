@@ -2,10 +2,14 @@
 $primary: #526dff;
 $secondary: #b9caff;
 $white: #fff;
+
+$bg-gray: #d7d7d7;
 $gray: #858585;
-$gray: #858585;
+$gray-two: rgba(68, 68, 68);
+
 $transparent-gray: rgba(68, 68, 68, 0.4);
-$dark: #041660;
+$dark-blue: #041660;
+$blue: #4c6cec;
 
 // ALERTS
 $primary-color: #17a2b8;
@@ -13,3 +17,7 @@ $dark-color: #343a40;
 $light-color: #f4f4f4;
 $danger-color: #dc3545;
 $success-color: #28a745;
+
+// NOT-FOUND LABEL
+$tag: #808080;
+$label: rgba(197, 197, 197, 0.46);
