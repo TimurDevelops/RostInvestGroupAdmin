@@ -1,6 +1,6 @@
 import React from "react";
 
-import Background from "../ui/Background";
+import Background from "../../pageComponents/Background";
 
 import "./NotFound.scss"
 import {useNavigate} from "react-router-dom";

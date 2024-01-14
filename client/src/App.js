@@ -6,9 +6,9 @@ import useUser from "./utils/useUser";
 // import PrivateRoute from "./components/ui/PrivateRoute";
 import Alert from "./components/ui/Alert";
 
-import Login from "./components/login/Login";
-import NotFound from "./components/notFound/NotFound";
-import PageWrapper from "./components/usersPage/pageWrapper";
+import Login from "./components/pages/loginPage/Login";
+import NotFound from "./components/pages/notFoundPage/NotFound";
+import PageWrapper from "./components/pageComponents/pageWrapper";
 
 import {v4 as uuidv4} from 'uuid';
 
@@ -55,7 +55,7 @@ const App = () => {
                      <PageWrapper setAlert={setAlert} logout={logout}/>
                    }/>
 
-            {/* notFound Page */}
+            {/* notFoundPage Page */}
             <Route path="/not-found"
                    element={<NotFound/>}/>
 

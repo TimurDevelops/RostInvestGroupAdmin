@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Background from "../ui/Background";
-import Navbar from "../ui/Navbar/Navbar";
-import Header from "../ui/Header";
+import Background from "./Background";
+import Navbar from "./navbar/Navbar";
+import Header from "./Header";
 
-import "./usersPage.scss"
+import "./pageWrapper.scss"
 
 
-const PageWrapper = ({logout, setAlert}) => {
+const PageWrapper = ({logout, children}) => {
 
   return (
     <Background>
@@ -16,7 +16,7 @@ const PageWrapper = ({logout, setAlert}) => {
         <Navbar logout={logout}/>
         <div className="content-wrapper">
           <Header logout={logout}/>
-
+          {children}
         </div>
       </div>
 
@@ -26,7 +26,6 @@ const PageWrapper = ({logout, setAlert}) => {
 
 PageWrapper.propTypes = {
   logout: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
 };
 
 export default PageWrapper;

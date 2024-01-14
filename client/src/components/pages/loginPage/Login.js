@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
-import api from "../../utils/api";
+import api from "../../../utils/api";
 
 import "./Login.scss"
-import AlertTypes from "../ui/AlertTypes";
-import Background from "../ui/Background";
+import AlertTypes from "../../ui/AlertTypes";
+import Background from "../../pageComponents/Background";
 
 const loginUser = async ({credentials}) => {
   try {

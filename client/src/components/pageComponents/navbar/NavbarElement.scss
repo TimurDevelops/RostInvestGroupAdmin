@@ -2,6 +2,7 @@
 @import "../../../styles/Colors";
 @import "../../../styles/Default";
 
+
 .navbar-element {
   cursor: pointer;
   font-family: 'Merriweather', serif;
@@ -14,8 +15,8 @@
   box-sizing: content-box;
 
   font-size: 16px;
-  color: #acb6c4;
-  background: #0f1a34;
+  color: $navbar-light;
+  background: $navbar-bg;
 
   // THE CATEGORY TITLE
   .navbar-drop-down-title {
@@ -25,10 +26,11 @@
     padding: 0.5rem 1rem 0.5rem .5rem;
 
     transition: background-color 100ms linear;
-    background: #0f1a34;
+    background: $navbar-bg;
 
     &:hover {
-      background: #091023;
+      background: $navbar-dark;
+      color: $navbar-light-text;
     }
 
     .navbar-drop-down-title-text {
@@ -48,7 +50,7 @@
   // DROP DOWN MENU
   .inner-navbar-list {
     height: auto;
-    background: #091023;
+    background: $navbar-dark;
     padding-left: 10px;
     transition: all 200ms ease-in-out;
     overflow: hidden;
@@ -58,7 +60,7 @@
       text-decoration: none;
 
       &:hover {
-        color: #eee;
+        color: $navbar-light-text;
       }
     }
   }
@@ -67,7 +69,7 @@
 // ACTIVE
 .navbar-element.active {
   .navbar-drop-down-title {
-    background: #091023;
+    background: $navbar-dark;
 
     .navbar-drop-down-title-icon.active {
       transform: rotate(0deg);
@@ -90,5 +92,5 @@
 }
 
 .inner-navbar-list .navbar-drop-down-title {
-  background: #091023;
+  background: $navbar-dark;
 }
