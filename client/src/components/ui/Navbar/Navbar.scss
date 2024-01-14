@@ -1,0 +1,17 @@
+@import "../../../styles/Colors";
+
+.navbar-wrapper {
+  height: 100%;
+  width: 18rem;
+  background: #0f1a34;
+  overflow-y: scroll;
+  scrollbar-color: #7A98FF9E #282c34;
+
+  .navbar-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: .5em 0 2em 0;
+
+  }
+}

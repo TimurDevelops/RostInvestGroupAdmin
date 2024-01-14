@@ -7,12 +7,13 @@ import useUser from "./utils/useUser";
 import Alert from "./components/ui/Alert";
 
 import Login from "./components/login/Login";
+import NotFound from "./components/notFound/NotFound";
+import PageWrapper from "./components/usersPage/pageWrapper";
 
 import {v4 as uuidv4} from 'uuid';
 
 import './App.css';
 import './Common.scss';
-import NotFound from "./components/NotFound/NotFound";
 
 const App = () => {
   const {user, setUser, unsetUser} = useUser()
@@ -30,6 +31,10 @@ const App = () => {
     setAlerts(alerts => alerts.filter((alert) => alert.id !== id));
   }
 
+  const logout = () => {
+    unsetUser();
+    setAuth({isAuthenticated: false, isLoading: false});
+  };
 
   return (
     <div className="app">
@@ -44,13 +49,21 @@ const App = () => {
                      <Login setAuth={setAuth} setAlert={setAlert} setUser={setUser} auth={auth}/>
                    }/>
 
-            {/* 404 Page */}
-            <Route path="/not-found" element={<NotFound/>}/>
+            {/* Users Page */}
+            <Route path="/users"
+                   element={
+                     <PageWrapper setAlert={setAlert} logout={logout}/>
+                   }/>
+
+            {/* notFound Page */}
+            <Route path="/not-found"
+                   element={<NotFound/>}/>
 
             {/* Navigation */}
-            <Route path="*" element={(
-              auth.isAuthenticated ? <Navigate to="/not-found"/> : <Navigate to="/login"/>
-            )}/>
+            <Route path="*"
+                   element={(
+                     auth.isAuthenticated ? <Navigate to="/not-found"/> : <Navigate to="/login"/>
+                   )}/>
 
           </Routes>
         </Router>

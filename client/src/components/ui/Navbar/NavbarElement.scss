@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+@import "../../../styles/Colors";
+@import "../../../styles/Default";
+
+.navbar-element {
+  cursor: pointer;
+  font-family: 'Merriweather', serif;
+
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  margin: 0;
+  box-sizing: content-box;
+
+  font-size: 16px;
+  color: #acb6c4;
+  background: #0f1a34;
+
+  // THE CATEGORY TITLE
+  .navbar-drop-down-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem 0.5rem .5rem;
+
+    transition: background-color 100ms linear;
+    background: #0f1a34;
+
+    &:hover {
+      background: #091023;
+    }
+
+    .navbar-drop-down-title-text {
+
+    }
+
+    .navbar-drop-down-title-icon {
+      width: 1em;
+      height: 1em;
+      font-size: .75em;
+      transition: transform 100ms linear;
+      padding-top: .125em;
+      transform: rotate(-90deg);
+    }
+  }
+
+  // DROP DOWN MENU
+  .inner-navbar-list {
+    height: auto;
+    background: #091023;
+    padding-left: 10px;
+    transition: all 200ms ease-in-out;
+    overflow: hidden;
+
+    .inner-navbar-element {
+      padding: .25em 0 .25em .5rem;
+      text-decoration: none;
+
+      &:hover {
+        color: #eee;
+      }
+    }
+  }
+}
+
+// ACTIVE
+.navbar-element.active {
+  .navbar-drop-down-title {
+    background: #091023;
+
+    .navbar-drop-down-title-icon.active {
+      transform: rotate(0deg);
+
+    }
+
+    .navbar-drop-down-title-text {
+
+    }
+
+  }
+
+  // DROP DOWN MENU
+  .inner-navbar-list {
+
+    .inner-navbar-element {
+
+    }
+  }
+}
+
+.inner-navbar-list .navbar-drop-down-title {
+  background: #091023;
+}
