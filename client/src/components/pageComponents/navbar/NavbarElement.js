@@ -18,8 +18,6 @@ const NavbarElement = ({title, list}) => {
   const [active, setActive] = useState(false)
   const numberOfElements = list.reduce(countElements, 0)
 
-  console.log(numberOfElements)
-
   return (
     <li className={`navbar-element ${active ? "active" : ""}`}>
 
@@ -33,12 +31,13 @@ const NavbarElement = ({title, list}) => {
         "transition": `all ${numberOfElements * 20}ms ease-in-out`,
       }}>
         {
-          list.map(item => {
+          // TODO fix the key to be an id
+          list.map((item, index) => {
             if (typeof item === "object") {
-              return <NavbarElement list={item.list} title={item.title}/>
+              return <NavbarElement list={item.list} title={item.title} key={index.toString() + item.title}/>
 
             } else if (typeof item === "string") {
-              return <li className="inner-navbar-element" key={item.title}>{item}</li>
+              return <li className="inner-navbar-element" key={index.toString() + item.title}>{item}</li>
             }
           })
         }
@@ -49,7 +48,7 @@ const NavbarElement = ({title, list}) => {
 
 NavbarElement.propTypes = {
   title: PropTypes.string.isRequired,
-  list: PropTypes.arrayOf(string).isRequired,
+  list: PropTypes.any.isRequired,
 };
 
 export default NavbarElement;

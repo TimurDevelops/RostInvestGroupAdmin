@@ -1,0 +1,39 @@
+@import "../../styles/Colors";
+
+//$primary
+//$secondary
+//$navbar-light
+//$navbar-bg
+//$navbar-dark
+
+.loader-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background: radial-gradient($dark-blue, $navbar-dark);
+}
+
+.loader {
+  width: 15rem;
+  height: 15rem;
+  border: 10px solid $secondary;
+  border-bottom-color: $primary;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

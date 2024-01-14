@@ -2,13 +2,12 @@ import React, {useState} from 'react';
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 
 import useUser from "./utils/useUser";
-
-// import PrivateRoute from "./components/ui/PrivateRoute";
+import PrivateRoute from "./components/ui/PrivateRoute";
 import Alert from "./components/ui/Alert";
 
 import Login from "./components/pages/loginPage/Login";
 import NotFound from "./components/pages/notFoundPage/NotFound";
-import PageWrapper from "./components/pageComponents/pageWrapper";
+import Users from "./components/pages/usersPage/users";
 
 import {v4 as uuidv4} from 'uuid';
 
@@ -40,34 +39,36 @@ const App = () => {
     <div className="app">
       <div className="app-body">
         <Alert alerts={alerts}/>
+          <Router>
+            <Routes>
+              {/* Sign In Page */}
+              <Route path="/login"
+                     element={
+                       <Login setAuth={setAuth} setAlert={setAlert} setUser={setUser} auth={auth}/>
+                     }/>
 
-        <Router>
-          <Routes>
-            {/* Sign In Page */}
-            <Route path="/login"
-                   element={
-                     <Login setAuth={setAuth} setAlert={setAlert} setUser={setUser} auth={auth}/>
-                   }/>
+              {/* Users Page */}
+              <Route path="/users"
+                     auth={auth}
+                     element={
+                       <PrivateRoute
+                         auth={auth}
+                         component={<Users setAlert={setAlert} logout={logout}/>}/>
+                     }/>
 
-            {/* Users Page */}
-            <Route path="/users"
-                   element={
-                     <PageWrapper setAlert={setAlert} logout={logout}/>
-                   }/>
+              {/* notFoundPage Page */}
+              <Route path="/not-found"
+                     element={<NotFound/>}/>
 
-            {/* notFoundPage Page */}
-            <Route path="/not-found"
-                   element={<NotFound/>}/>
+              {/* Navigation */}
 
-            {/* Navigation */}
-            <Route path="*"
-                   element={(
-                     auth.isAuthenticated ? <Navigate to="/not-found"/> : <Navigate to="/login"/>
-                   )}/>
+              <Route path="*"
+                     element={(
+                       auth.isAuthenticated ? <Navigate to="/not-found"/> : <Navigate to="/login"/>
+                     )}/>
 
-          </Routes>
-        </Router>
-
+            </Routes>
+          </Router>
 
       </div>
     </div>

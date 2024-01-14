@@ -26,7 +26,7 @@ const Header = ({logout}) => {
       </div>
 
       <div className="logout-wrapper">
-        <div className="logout-button">
+        <div className="logout-button" onClick={() => logout()}>
           <MdLogout/>
         </div>
       </div>

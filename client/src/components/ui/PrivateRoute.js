@@ -1,22 +1,21 @@
-import React from 'react';
-import {Route, Navigate} from 'react-router-dom';
+import React, {Fragment} from 'react';
+import {Navigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import Spinner from "./Spinner";
 
-const PrivateRoute = ({component: Component, auth: {isAuthenticated, loading}, ...rest}) => {
+const PrivateRoute = ({component, auth: {isAuthenticated, isLoading}}) => {
   return (
-    <Route
-      {...rest}
-      element={(
-        loading ? (
+    <Fragment>
+      {
+        isLoading ? (
           <Spinner/>
-        ) : isAuthenticated ? (
-          <Component {...rest} />
-        ) : (
-          <Navigate to="/login"/>
-        )
-      )}
-    />
+        ) : isAuthenticated ?
+          component : (
+            <Navigate to="/login"/>
+          )
+      }
+    </Fragment>
   );
 }
 

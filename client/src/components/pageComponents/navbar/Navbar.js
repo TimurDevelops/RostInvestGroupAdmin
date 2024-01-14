@@ -3,6 +3,7 @@ import React from "react";
 import NavbarElement from "./NavbarElement";
 
 import "./Navbar.scss"
+import {string} from "prop-types";
 
 
 const Navbar = () => {
@@ -79,11 +80,15 @@ const Navbar = () => {
     list: ["Categories", "Edit", "View", "Navigate"]
   }]
 
+  // TODO fix the key to be an id
+
   return (
     <div className="navbar-wrapper">
       <ul className="navbar-list">
         {
-          data.map(item => <NavbarElement list={item.list} title={item.title}/>)
+          data.map((item, index) =>
+            <NavbarElement list={item.list} title={item.title} key={index.toString() + item.title}/>
+          )
         }
       </ul>
     </div>

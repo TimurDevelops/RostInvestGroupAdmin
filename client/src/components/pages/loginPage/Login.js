@@ -44,7 +44,7 @@ const Login = ({setUser, setAuth, setAlert}) => {
       });
       setUser(user)
       setAuth({isLoading: false, isAuthenticated: true});
-      navigate("/user-view");
+      navigate("/users");
 
     } catch (errors) {
       setAuth({isLoading: false, isAuthenticated: false});
