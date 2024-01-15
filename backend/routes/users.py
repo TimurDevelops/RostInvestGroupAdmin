@@ -37,7 +37,7 @@ def create_user():
     encoded_jwt = jwt.encode(
         {"username": user.username, "id": user.id, "isAdmin": user.is_admin}, JWT_KEY, algorithm=JWT_ALGORITHM
     )
-    return jsonify({"token": encoded_jwt}), 200
+    return jsonify({"token": encoded_jwt}), 201
 
 
 @users_blueprint.route('/create_default', methods=["POST"])

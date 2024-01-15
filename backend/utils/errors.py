@@ -14,3 +14,7 @@ class InvalidFieldsException(StandardException):
 
 class UserNotAuthorisedException(StandardException):
     pass
+
+
+class InsufficientPrivilegesException(StandardException):
+    pass

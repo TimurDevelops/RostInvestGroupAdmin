@@ -2,7 +2,7 @@ import logging
 from functools import wraps
 from flask import jsonify
 
-from backend.utils.errors import InvalidFieldsException
+from backend.utils.errors import InvalidFieldsException, UserNotAuthorisedException, InsufficientPrivilegesException
 from backend.utils.messages import UNEXPECTED_ERROR_MESSAGE
 
 
@@ -11,9 +11,18 @@ def error_handler(func):
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+
         except InvalidFieldsException as e:
-            logging.warning(f"InvalidFieldsException: {str(e)}")
-            return jsonify({"errors": [str(e)]}), 409
+            logging.warning(f"Exception: {str(e)}")
+            return jsonify({"errors": [str(e)]}), 406
+
+        except UserNotAuthorisedException as e:
+            logging.warning(f"Exception: {str(e)}")
+            return jsonify({"errors": [str(e)]}), 401
+
+        except InsufficientPrivilegesException as e:
+            logging.warning(f"Exception: {str(e)}")
+            return jsonify({"errors": [str(e)]}), 403
 
         except Exception as e:
             logging.warning(str(e))
