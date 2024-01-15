@@ -5,7 +5,7 @@ import Background from "./Background";
 import Navbar from "./navbar/Navbar";
 import Header from "./Header";
 
-import "./pageWrapper.scss"
+import "./PageWrapper.scss"
 
 
 const PageWrapper = ({logout, children}) => {

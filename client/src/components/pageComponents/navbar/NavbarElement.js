@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import PropTypes, {string} from "prop-types";
+import PropTypes from "prop-types";
 import {FaChevronDown} from "react-icons/fa";
 
 
@@ -35,10 +35,10 @@ const NavbarElement = ({title, list}) => {
           list.map((item, index) => {
             if (typeof item === "object") {
               return <NavbarElement list={item.list} title={item.title} key={index.toString() + item.title}/>
-
             } else if (typeof item === "string") {
               return <li className="inner-navbar-element" key={index.toString() + item.title}>{item}</li>
             }
+            return "";
           })
         }
       </ul>

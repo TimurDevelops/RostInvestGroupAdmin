@@ -7,7 +7,7 @@ import Alert from "./components/ui/Alert";
 
 import Login from "./components/pages/loginPage/Login";
 import NotFound from "./components/pages/notFoundPage/NotFound";
-import Users from "./components/pages/usersPage/users";
+import Users from "./components/pages/usersPage/Users";
 
 import {v4 as uuidv4} from 'uuid';
 

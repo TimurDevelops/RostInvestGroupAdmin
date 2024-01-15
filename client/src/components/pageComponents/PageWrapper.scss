@@ -6,6 +6,8 @@
   justify-content: stretch;
 
   .content-wrapper {
+    display: flex;
+    flex-direction: column;
     flex: 1;
   }
 }

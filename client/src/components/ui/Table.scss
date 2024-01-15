@@ -1,0 +1,53 @@
+@import "../../styles/Colors";
+
+// TABLE
+.table-wrapper {
+  font-family: 'Nunito', sans-serif;
+  margin-top: 2rem;
+
+  .table-checkbox {
+    height: 2em;
+    width: 2em;
+  }
+
+  .table-head {
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    font-size: .55em;
+    font-weight: bolder;
+    color: $dark-color;
+    border-bottom: 2px solid $dark-color;
+
+
+    .table-head-item {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      word-break: break-all;
+    }
+  }
+
+  .table-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 1rem;
+    padding: .5rem 0;
+    border: 1px solid rgb(209, 209, 220);
+    border-radius: 0.25rem;
+
+    .table-row-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      font-size: .55em;
+      word-break: break-all;
+    }
+  }
+}

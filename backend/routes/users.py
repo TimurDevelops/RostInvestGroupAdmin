@@ -46,7 +46,7 @@ def create_default_user():
     """
     Create a default user.
     """
-    create_user()
+    return create_user()
 
 
 @users_blueprint.route('/', methods=["POST"])
@@ -57,7 +57,7 @@ def create_new_user():
     """
     Create a new user.
     """
-    create_user()
+    return create_user()
 
 
 @users_blueprint.route('/get-users', methods=["POST"])
@@ -67,5 +67,13 @@ def get_users():
     Get all users.
     """
     db = DBHandler()
-    users = db.session.query(User).with_entities(User.id, User.username).all()
+    users = db.session.query(User).with_entities(
+        User.id,
+        User.username,
+        User.name,
+        User.email,
+        User.is_admin,
+        User.create_date,
+        User.update_date
+    ).all()
     return {"users": [User.as_dict(user) for user in users]}, 200
