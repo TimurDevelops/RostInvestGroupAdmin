@@ -1,9 +1,11 @@
 import jwt
+
+from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify
 
 from backend.db.db import DBHandler
 from backend.models.models import User
-from backend.settings import JWT_KEY
+from backend.settings import JWT_KEY, JWT_ALGORITHM
 from backend.utils.cipher import decrypt
 from backend.utils.error_handler import error_handler
 from backend.utils.errors import InvalidFieldsException
@@ -29,5 +31,10 @@ def authenticate_user():
     if password != decrypt(user.password):
         raise InvalidFieldsException(message=WRONG_LOGIN_PASSWORD_MESSAGE)
 
-    encoded_jwt = jwt.encode({"username": user.username, "id": user.id}, JWT_KEY, algorithm="HS256")
+    expiration_date = datetime.now() + timedelta(hours=5)
+    encoded_jwt = jwt.encode(
+        {"username": user.username, "id": user.id, "exp": expiration_date},
+        JWT_KEY,
+        algorithm=JWT_ALGORITHM
+    )
     return jsonify({"token": encoded_jwt}), 200

@@ -12,5 +12,6 @@ DB_DATABASE = os.getenv("DB_DATABASE", "rostinvestdb")
 # FERNET_KEY = os.getenv("password_key", Fernet.generate_key())
 FERNET_KEY = os.getenv("password_key", b"keT1fUb2LJqspx-fuusjO2-Xau0s8B1s1ZyT108NpoQ=")
 JWT_KEY = os.getenv("jwt_key", str(uuid.uuid4()))
+JWT_ALGORITHM = os.getenv("jwt_algorithm", "HS256")
 
 MIN_PASSWORD_LENGTH = 6

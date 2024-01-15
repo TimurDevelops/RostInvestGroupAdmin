@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime
+
 import jwt
 
 from functools import wraps
@@ -6,7 +8,7 @@ from flask import request
 
 from backend.db.db import DBHandler
 from backend.models.models import User
-from backend.settings import JWT_KEY
+from backend.settings import JWT_KEY, JWT_ALGORITHM
 from backend.utils.errors import UserNotAuthorisedException
 from backend.utils.messages import USER_NOT_AUTHORISED_MESSAGE, UNKNOWN_TOKEN_MESSAGE, REQUIRES_ADMIN_PRIVILEGE_MESSAGE
 
@@ -18,12 +20,9 @@ def check_admin_privilege(func):
         if not token:
             raise UserNotAuthorisedException(message=USER_NOT_AUTHORISED_MESSAGE)
         try:
-            token = token.split(" ")[1]
+            token = str.replace(str(token), "Bearer ", "")
             token_data = jwt.decode(token, JWT_KEY, algorithm="HS256")
             user_id = token_data.get("id")
-            username = token_data.get("username")
-            if not user_id or not username:
-                raise UserNotAuthorisedException(message=UNKNOWN_TOKEN_MESSAGE)
 
             db = DBHandler()
             user = db.session.query(User).filter(User.id == user_id).first()
@@ -46,10 +45,13 @@ def check_is_authorised(func):
         if not token:
             raise UserNotAuthorisedException(message=USER_NOT_AUTHORISED_MESSAGE)
         try:
-            token = token.split(" ")[1]
-            token_data = jwt.decode(token, JWT_KEY, algorithm="HS256")
-            if not token_data.get("id") or not token_data.get("username"):
+            token = str.replace(str(token), "Bearer ", "")
+            token_data = jwt.decode(token, JWT_KEY, algorithm=JWT_ALGORITHM)
+            if not token_data.get("id") or not token_data.get("username") or not token_data.get("exp"):
                 raise UserNotAuthorisedException(message=UNKNOWN_TOKEN_MESSAGE)
+            if datetime.now() > token_data.get("exp"):
+                raise UserNotAuthorisedException(message=USER_NOT_AUTHORISED_MESSAGE)
+
             return func(*args, **kwargs)
 
         except Exception as e:

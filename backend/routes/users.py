@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 
 from backend.db.db import DBHandler
 from backend.models.models import User
-from backend.settings import JWT_KEY, MIN_PASSWORD_LENGTH
+from backend.settings import JWT_KEY, MIN_PASSWORD_LENGTH, JWT_ALGORITHM
 from backend.utils.cipher import encrypt
 from backend.utils.decorators import check_admin_privilege, check_is_authorised
 from backend.utils.error_handler import error_handler
@@ -35,7 +35,7 @@ def create_user():
 
     user = db.session.query(User).filter(User.username == username).first()
     encoded_jwt = jwt.encode(
-        {"username": user.username, "id": user.id, "isAdmin": user.is_admin}, JWT_KEY, algorithm="HS256"
+        {"username": user.username, "id": user.id, "isAdmin": user.is_admin}, JWT_KEY, algorithm=JWT_ALGORITHM
     )
     return jsonify({"token": encoded_jwt}), 200
 

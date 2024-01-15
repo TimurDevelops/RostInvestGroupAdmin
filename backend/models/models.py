@@ -1,5 +1,8 @@
-from sqlalchemy import Integer, String, LargeBinary, Boolean
+import datetime
+
+from sqlalchemy import Integer, String, LargeBinary, Boolean, DateTime
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.sql import func
 
 
 class Base(DeclarativeBase):
@@ -15,6 +18,13 @@ class User(Base):
     email: Mapped[str] = mapped_column(String, nullable=True)
     is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     password: Mapped[str] = mapped_column(LargeBinary, nullable=False)
+    create_date: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False, default=func.now())
+    update_date: Mapped[datetime.datetime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=func.now(),
+        onupdate=func.current_timestamp()
+    )
 
     @classmethod
     def as_dict(cls, user):
