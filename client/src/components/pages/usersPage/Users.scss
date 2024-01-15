@@ -1,0 +1,48 @@
+@import "../../../styles/Colors";
+
+.section-bg {
+  display: flex;
+  flex: 1;
+  background: rgba(243, 244, 243, 0.73);
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  .section-wrapper {
+    flex: 1;
+    background: #fff;
+    padding: 1rem;
+    border-radius: .25rem;
+    box-shadow: #ddd 1px 1px 15px;
+    box-sizing: border-box;
+
+  }
+}
+
+.users-wrapper {
+
+}
+
+.section-header {
+  .section-header-title {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: $gray-two;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+    margin: 0;
+
+    .section-header-icon {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      color: $gray-two;
+    }
+
+    .section-header-text {
+      padding: 0 .5em;
+    }
+  }
+
+}
