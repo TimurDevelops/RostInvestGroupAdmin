@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 import useUser from "./useUser";
-import configs from '../config.json';
+import configs from "../config.json";
 
 const serverUrl = configs.serverUrl;
 
 const api = axios.create({
   baseURL: `${serverUrl}/`,
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   }
 });
 /**

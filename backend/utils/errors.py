@@ -10,3 +10,7 @@ class StandardException(Exception):
 
 class InvalidFieldsException(StandardException):
     pass
+
+
+class UserNotAuthorisedException(StandardException):
+    pass

@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from fernet import Fernet
+# from fernet import Fernet
 
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASS = os.getenv("DB_PASS", "admin")

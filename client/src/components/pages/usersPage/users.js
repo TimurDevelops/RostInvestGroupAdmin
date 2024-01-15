@@ -11,18 +11,19 @@ const Users = ({logout}) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const getLessons = async () => {
+    const getUsers = async () => {
       const res = await api.post('/users/get-users');
-      setUsers(res.data);
+      setUsers(res.data.user);
     }
-    getLessons().catch((err) => console.error(err))
-
+    getUsers().catch((err) => console.error(err))
   }, []);
 
   return (
     <PageWrapper logout={() => logout()}>
       <section className="users-wrapper">
-        {users}
+        {
+          users.map(user => <div>{user.username}</div>)
+        }
       </section>
     </PageWrapper>
 

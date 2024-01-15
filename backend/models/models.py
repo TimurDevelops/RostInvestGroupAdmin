@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, LargeBinary
+from sqlalchemy import Integer, String, LargeBinary, Boolean
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -11,6 +11,9 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=True)
+    email: Mapped[str] = mapped_column(String, nullable=True)
+    is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     password: Mapped[str] = mapped_column(LargeBinary, nullable=False)
 
     @classmethod

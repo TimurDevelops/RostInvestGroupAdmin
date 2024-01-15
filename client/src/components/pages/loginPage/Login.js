@@ -1,15 +1,18 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
+
+import Background from "../../pageComponents/Background";
+import AlertTypes from "../../ui/AlertTypes";
 import api from "../../../utils/api";
 
 import "./Login.scss"
-import AlertTypes from "../../ui/AlertTypes";
-import Background from "../../pageComponents/Background";
 
 const loginUser = async ({credentials}) => {
   try {
     const res = await api.post("/auth", credentials);
+    const token = res.data.token;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     return res.data;
   } catch (e) {
     throw e.response.data.errors;
