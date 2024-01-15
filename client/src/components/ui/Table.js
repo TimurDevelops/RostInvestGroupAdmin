@@ -1,13 +1,12 @@
 import React from "react";
-import {FaCheck} from "react-icons/fa";
-import {TiDelete} from "react-icons/ti";
-import {IoIosClose} from "react-icons/io";
-
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
+import {FaCheck} from "react-icons/fa";
+import {FaTrashAlt} from "react-icons/fa";
+import {IoIosClose} from "react-icons/io";
 
 
 import "./Table.scss"
-import {Link} from "react-router-dom";
 
 
 const Table = ({data, columns}) => {
@@ -23,8 +22,8 @@ const Table = ({data, columns}) => {
       return <Link to={`${column.link}:${item.id}`}>{item[column.id]}</Link>;
     } else if (column.type === "checkbox") {
       return item[column.id] ? <FaCheck/> : <IoIosClose/>;
-    } else if (column.type === "select") {
-      return <TiDelete/>;
+    } else if (column.type === "delete") {
+      return <span className={"table-delete-btn"}><FaTrashAlt/></span>;
     } else {
       return item[column.id];
     }

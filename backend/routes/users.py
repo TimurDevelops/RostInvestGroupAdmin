@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import jwt
 from flask import Blueprint, request, jsonify
 
@@ -76,4 +78,5 @@ def get_users():
         User.create_date,
         User.update_date
     ).all()
+
     return {"users": [User.as_dict(user) for user in users]}, 200

@@ -36,10 +36,12 @@ const Users = ({logout}) => {
     flex: "0 0 6.25%"
   }, {
     id: "create_date",
+    type: "date",
     label: "Дата создания",
     flex: "0 0 18.75%"
   }, {
     id: "update_date",
+    type: "date",
     label: "Дата последнего изменения",
     flex: "0 0 18.75%"
   }, {
@@ -78,3 +80,4 @@ Users.propTypes = {
 };
 
 export default Users;
+

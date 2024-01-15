@@ -31,6 +31,10 @@ class User(Base):
         d_user = {}
         for column in cls.__table__.columns:
             if getattr(user, column.key, None):
-                d_user[column.key] = user.__getattribute__(column.key)
+                if isinstance(user.__getattribute__(column.key), datetime.datetime):
+                    date = user.__getattribute__(column.key)
+                    d_user[column.key] = datetime.datetime.strftime(date, "%Y/%m/%d %H:%M:%S")
+                else:
+                    d_user[column.key] = user.__getattribute__(column.key)
 
         return d_user

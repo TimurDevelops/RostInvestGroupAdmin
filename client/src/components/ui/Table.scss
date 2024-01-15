@@ -48,6 +48,22 @@
       height: 100%;
       font-size: .55em;
       word-break: break-all;
+
+      .table-delete-btn {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 2em;
+        height: 2em;
+        font-size: 1.5em;
+
+        &:hover{
+          color: darkred;
+        }
+
+      }
     }
   }
 }
