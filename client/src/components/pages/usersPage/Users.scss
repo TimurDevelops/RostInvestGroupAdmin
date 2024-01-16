@@ -19,10 +19,6 @@
   }
 }
 
-.users-wrapper {
-
-}
-
 .section-header {
   .section-header-title {
     display: flex;
@@ -44,5 +40,33 @@
       padding: 0 .5em;
     }
   }
-
 }
+
+
+// CONTROL PANEL
+.table-controls {
+  display: flex;
+  font-family: 'Nunito', sans-serif;
+  font-size: .55em;
+
+  .create-user-button {
+    cursor: pointer;
+    margin-right: .5rem;
+    display: flex;
+    align-items: center;
+    color: #4c6cec;
+    text-decoration: underline;
+
+    .table-controls-icon {
+      display: flex;
+      align-items: center;
+
+    }
+
+    .table-controls-text {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+

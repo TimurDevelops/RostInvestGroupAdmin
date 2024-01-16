@@ -19,14 +19,20 @@
 
 .form-group.flex {
   display: flex;
-  padding-top: 0;
-  margin-top: 0;
+  align-items: center;
 
-  .form-label{
-    position: relative;
-    padding-top: 5px;
+  .form-field-checkbox {
+    width: 1.5em;
+    height: 1.5em;
+    margin-left: 1rem;
   }
-  .form-field{
+
+  .form-label {
+    position: relative;
+    padding-left: 5px;
+  }
+
+  .form-field {
     width: 20px;
     margin-left: 15px;
 
@@ -89,4 +95,30 @@
   display: flex;
   align-content: center;
   justify-content: left;
+  margin-top: 1rem;
+
+  .submit-btn {
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+
+    border: 0;
+    border-radius: .2rem;
+    box-shadow: #ddd 1px 1px 15px;
+
+    color: #eee;
+    background: $gray;
+    font-size: 1em;
+    padding: .5rem 1rem;
+
+    transition: background 100ms linear;
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+
+    &:hover {
+      background: $danger-color;
+    }
+  }
 }

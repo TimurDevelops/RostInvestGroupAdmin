@@ -51,7 +51,7 @@ def create_default_user():
     return create_user()
 
 
-@users_blueprint.route('/', methods=["POST"])
+@users_blueprint.route('', methods=["POST"])
 @error_handler
 @check_admin_privilege
 @check_is_authorised
@@ -59,7 +59,8 @@ def create_new_user():
     """
     Create a new user.
     """
-    return create_user()
+    create_user()
+    return {"success": True}, 201
 
 
 @users_blueprint.route('/get-users', methods=["POST"])

@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 import {FaUsers} from "react-icons/fa";
+import {IoMdCreate} from "react-icons/io";
 
+import Table from "../../ui/Table";
 import PageWrapper from "../../pageComponents/PageWrapper";
+
 import api from "../../../utils/api";
 
 import "./Users.scss"
-import Table from "../../ui/Table";
 
 
 const Users = ({logout}) => {
@@ -69,10 +72,23 @@ const Users = ({logout}) => {
               <span className="section-header-text">Пользователи</span>
             </h4>
           </div>
+
+          <div className="table-controls">
+            <div className="create-user-button">
+              <span className="table-controls-icon"><IoMdCreate/></span>
+              <span className="table-controls-text"><Link to={"create-user"}>Создать</Link></span>
+            </div>
+            <div className={`create-user-button`}>
+              <span className="table-controls-icon"><IoMdCreate/></span>
+              <span className="table-controls-text">Удалить выбранные</span>
+            </div>
+          </div>
+
           <Table data={users} columns={columns}/>
         </section>
       </div>
-    </PageWrapper>);
+    </PageWrapper>
+  );
 }
 
 Users.propTypes = {

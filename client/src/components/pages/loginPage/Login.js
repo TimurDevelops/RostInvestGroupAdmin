@@ -3,21 +3,13 @@ import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 
 import Background from "../../pageComponents/Background";
+
+import {outputErrors} from "../../../utils/utils";
 import AlertTypes from "../../ui/AlertTypes";
 import api from "../../../utils/api";
 
 import "./Login.scss"
 
-const loginUser = async ({credentials}) => {
-  try {
-    const res = await api.post("/auth", credentials);
-    const token = res.data.token;
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    return res.data;
-  } catch (e) {
-    throw e.response.data.errors;
-  }
-}
 
 const Login = ({setUser, setAuth, setAlert}) => {
 
@@ -25,13 +17,15 @@ const Login = ({setUser, setAuth, setAlert}) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  const outputErrors = (errors) => {
+
+  const loginUser = async ({credentials}) => {
     try {
-      errors.forEach(error => {
-        setAlert(error, AlertTypes.DANGER)
-      })
-    } catch (err) {
-      setAlert("Произошла непредвиденная ошибка!", AlertTypes.DANGER)
+      const res = await api.post("/auth", credentials);
+      const token = res.data.token;
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      return res.data;
+    } catch (e) {
+      outputErrors(e.response.data.errors, setAlert);
     }
   }
 
@@ -48,10 +42,9 @@ const Login = ({setUser, setAuth, setAlert}) => {
       setUser(user)
       setAuth({isLoading: false, isAuthenticated: true});
       navigate("/users");
-
     } catch (errors) {
       setAuth({isLoading: false, isAuthenticated: false});
-      outputErrors(errors);
+      setAlert("Произошла непредвиденная ошибка!", AlertTypes.DANGER)
     }
   }
 

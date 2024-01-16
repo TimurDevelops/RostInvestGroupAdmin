@@ -26,7 +26,8 @@ def check_admin_privilege(func):
             raise UserNotAuthorisedException(message=UNKNOWN_TOKEN_MESSAGE)
         try:
             token = str.replace(str(token), "Bearer ", "")
-            token_data = jwt.decode(token, JWT_KEY, algorithm="HS256")
+            token_data = jwt.decode(token, JWT_KEY, algorithm=JWT_ALGORITHM)
+            # token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
             user_id = token_data.get("id")
 
             db = DBHandler()
