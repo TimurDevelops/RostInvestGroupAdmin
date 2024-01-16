@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import {v4 as uuidv4} from 'uuid';
 
@@ -36,10 +36,10 @@ const App = () => {
     setAlertsState(alerts => alerts.filter((alert) => alert.id !== id));
   }
 
-  const logout = () => {
+  const logout = useCallback(() => {
     unsetUser();
     setAuth({isAuthenticated: false, isLoading: false});
-  };
+  }, [unsetUser]);
 
   useEffect(() => {
     /**
@@ -58,7 +58,7 @@ const App = () => {
         return Promise.reject(err);
       }
     );
-  }, []);
+  }, [logout]);
 
 
   return (

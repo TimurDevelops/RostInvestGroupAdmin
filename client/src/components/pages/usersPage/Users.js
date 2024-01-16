@@ -54,6 +54,10 @@ const Users = ({logout}) => {
     flex: "0 0 6.25%"
   }]);
 
+  const deleteUser = () => {
+
+  }
+
   useEffect(() => {
     const getUsers = async () => {
       const res = await api.post('/users/get-users');
@@ -84,7 +88,7 @@ const Users = ({logout}) => {
             </div>
           </div>
 
-          <Table data={users} columns={columns}/>
+          <Table data={users} columns={columns} deleteItem={deleteUser}/>
         </section>
       </div>
     </PageWrapper>

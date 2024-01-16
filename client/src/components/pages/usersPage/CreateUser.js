@@ -88,13 +88,13 @@ const CreateUser = ({logout, setAlerts}) => {
 
               <div className="form-group field">
                 <input type="email" className="form-field" placeholder="Почта" name="email" id="email"
-                       onChange={e => setName(e.target.value)}/>
+                       onChange={e => setEmail(e.target.value)}/>
                 <label htmlFor="email" className="form-label">Почта</label>
               </div>
 
               <div className="form-group field">
                 <input type="text" className="form-field" placeholder="Имя пользователя" name="name" id="name"
-                       onChange={e => setEmail(e.target.value)}/>
+                       onChange={e => setName(e.target.value)}/>
                 <label htmlFor="name" className="form-label">Имя пользователя</label>
               </div>
 

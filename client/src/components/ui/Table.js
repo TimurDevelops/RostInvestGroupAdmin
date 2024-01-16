@@ -1,15 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import {FaCheck} from "react-icons/fa";
+import {FaCheck, FaBan} from "react-icons/fa";
 import {FaTrashAlt} from "react-icons/fa";
-import {IoIosClose} from "react-icons/io";
 
 
 import "./Table.scss"
 
 
-const Table = ({data, columns}) => {
+const Table = ({data, columns, deleteItem}) => {
 
   const selectAll = (e) => {
     //  TODO select all function
@@ -21,9 +20,10 @@ const Table = ({data, columns}) => {
     } else if (column.type === "link") {
       return <Link to={`${column.link}:${item.id}`}>{item[column.id]}</Link>;
     } else if (column.type === "checkbox") {
-      return item[column.id] ? <FaCheck/> : <IoIosClose/>;
+      return item[column.id] ? <span className="center green"><FaCheck/></span> :
+        <span className="center red"><FaBan/></span>;
     } else if (column.type === "delete") {
-      return <span className={"table-delete-btn"}><FaTrashAlt/></span>;
+      return <span className="table-delete-btn" onClick={() => deleteItem(item.id)}><FaTrashAlt/></span>;
     } else {
       return item[column.id];
     }
@@ -71,7 +71,8 @@ const Table = ({data, columns}) => {
 
 Table.propTypes = {
   data: PropTypes.array.isRequired,
-  columns: PropTypes.array.isRequired
+  columns: PropTypes.array.isRequired,
+  deleteItem: PropTypes.func.isRequired
 };
 
 export default Table;

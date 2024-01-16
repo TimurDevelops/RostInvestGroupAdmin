@@ -17,3 +17,17 @@ body {
 li {
   list-style-type: none;
 }
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
