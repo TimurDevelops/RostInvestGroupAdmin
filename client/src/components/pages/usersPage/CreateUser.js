@@ -17,7 +17,7 @@ const CreateUser = ({logout, setAlerts}) => {
   const [confirmPassword, setConfirmPassword] = useState();
   const [name, setName] = useState();
   const [email, setEmail] = useState();
-  const [isAdmin, setIsAdmin] = useState();
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const createUser = async (credentials) => {
     try {

@@ -26,8 +26,7 @@ def check_admin_privilege(func):
             raise UserNotAuthorisedException(message=UNKNOWN_TOKEN_MESSAGE)
         try:
             token = str.replace(str(token), "Bearer ", "")
-            token_data = jwt.decode(token, JWT_KEY, algorithm=JWT_ALGORITHM)
-            # token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
+            token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
             user_id = token_data.get("id")
 
             db = DBHandler()
@@ -35,12 +34,13 @@ def check_admin_privilege(func):
             if not user.is_admin:
                 raise InsufficientPrivilegesException(message=REQUIRES_ADMIN_PRIVILEGE_MESSAGE)
 
-            return func(*args, **kwargs)
         except InsufficientPrivilegesException as e:
             raise e
         except Exception as e:
             logging.warning(str(e))
             raise UserNotAuthorisedException(message=AUTH_ERROR_MESSAGE)
+
+        return func(*args, **kwargs)
 
     return wrapper
 
@@ -53,14 +53,14 @@ def check_is_authorised(func):
             raise UserNotAuthorisedException(message=UNKNOWN_TOKEN_MESSAGE)
         try:
             token = str.replace(str(token), "Bearer ", "")
-            token_data = jwt.decode(token, JWT_KEY, algorithm=JWT_ALGORITHM)
-            if datetime.now() > token_data.get("exp"):
+            token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
+            expiration_date = datetime.fromtimestamp(token_data.get("exp"))
+            if datetime.now() > expiration_date:
                 raise UserNotAuthorisedException(message=TOKEN_EXPIRED_MESSAGE)
-
-            return func(*args, **kwargs)
 
         except Exception as e:
             logging.warning(str(e))
             raise UserNotAuthorisedException(message=AUTH_ERROR_MESSAGE)
+        return func(*args, **kwargs)
 
     return wrapper

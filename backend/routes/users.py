@@ -20,7 +20,7 @@ def create_user():
     password = request.json["password"]
     name = request.json["name"]
     email = request.json["email"]
-    is_admin = request.json["is_admin"]
+    is_admin = request.json["isAdmin"]
 
     if not username or not password:
         raise InvalidFieldsException(message=MISSING_LOGIN_PASSWORD_MESSAGE)
@@ -35,11 +35,7 @@ def create_user():
     db.session.add(User(username=username, password=password_hash, name=name, email=email, is_admin=is_admin))
     db.session.commit()
 
-    user = db.session.query(User).filter(User.username == username).first()
-    encoded_jwt = jwt.encode(
-        {"username": user.username, "id": user.id, "isAdmin": user.is_admin}, JWT_KEY, algorithm=JWT_ALGORITHM
-    )
-    return jsonify({"token": encoded_jwt}), 201
+    return jsonify({"success": True}), 201
 
 
 @users_blueprint.route('/create_default', methods=["POST"])

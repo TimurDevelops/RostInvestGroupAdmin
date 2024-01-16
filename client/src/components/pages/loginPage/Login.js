@@ -40,7 +40,7 @@ const Login = ({setUser, setAuth, setAlerts}) => {
         }
       });
       if (res.success === true) {
-        setUser(res.user)
+        setUser({username: res.user, token: res.token})
         setAuth({isLoading: false, isAuthenticated: true});
         navigate("/users");
       } else {
