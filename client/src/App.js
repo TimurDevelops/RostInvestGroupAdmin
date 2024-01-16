@@ -19,17 +19,21 @@ import './Common.scss';
 const App = () => {
   const {user, setUser, unsetUser} = useUser()
   const [auth, setAuth] = useState({isAuthenticated: Boolean(user && user.token), isLoading: false});
-  const [alerts, setAlerts] = useState([]);
+  const [alertsState, setAlertsState] = useState([]);
 
-  const setAlert = (msg, alertType, timeout = 5000) => {
-    const id = uuidv4();
-    setAlerts([...alerts, {msg, alertType, id}])
+  const setAlerts = (alerts, timeout = 5000) => {
 
-    setTimeout(() => removeAlert(id), timeout);
+    alerts = alerts.map(({msg, type}) => {
+      const id = uuidv4();
+      setTimeout(() => removeAlert(id), timeout);
+      timeout += 100;
+      return {msg, type, id}
+    })
+    setAlertsState([...alertsState, ...alerts])
   };
 
   const removeAlert = (id) => {
-    setAlerts(alerts => alerts.filter((alert) => alert.id !== id));
+    setAlertsState(alerts => alerts.filter((alert) => alert.id !== id));
   }
 
   const logout = () => {
@@ -49,8 +53,7 @@ const App = () => {
       res => res,
       err => {
         if (Number(err.response.status) === 401) {
-          // logout();
-          console.log("logout")
+          logout();
         }
         return Promise.reject(err);
       }
@@ -61,13 +64,13 @@ const App = () => {
   return (
     <div className="app">
       <div className="app-body">
-        <Alert alerts={alerts}/>
+        <Alert alerts={alertsState}/>
         <Router>
           <Routes>
             {/* Sign In Page */}
             <Route path="/login"
                    element={
-                     <Login setAuth={setAuth} setAlert={setAlert} setUser={setUser} auth={auth}/>
+                     <Login setAuth={setAuth} setAlerts={setAlerts} setUser={setUser} auth={auth}/>
                    }/>
 
             {/* Users Page */}
@@ -76,7 +79,7 @@ const App = () => {
                    element={
                      <PrivateRoute
                        auth={auth}
-                       component={<Users setAlert={setAlert} logout={logout}/>}/>
+                       component={<Users setAlerts={setAlerts} logout={logout}/>}/>
                    }/>
             {/* Create user page */}
             <Route path="/users/create-user"
@@ -84,7 +87,7 @@ const App = () => {
                    element={
                      <PrivateRoute
                        auth={auth}
-                       component={<CreateUser setAlert={setAlert} logout={logout}/>}/>
+                       component={<CreateUser setAlerts={setAlerts} logout={logout}/>}/>
                    }/>
 
             {/* notFoundPage Page */}

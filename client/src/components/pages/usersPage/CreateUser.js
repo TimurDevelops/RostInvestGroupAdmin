@@ -5,14 +5,13 @@ import {IoMdCreate} from "react-icons/io";
 
 import PageWrapper from "../../pageComponents/PageWrapper";
 
-import {outputErrors} from "../../../utils/utils";
 import AlertTypes from "../../ui/AlertTypes";
 import api from "../../../utils/api";
 
 import "./Users.scss"
 
 
-const CreateUser = ({logout, setAlert}) => {
+const CreateUser = ({logout, setAlerts}) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -25,34 +24,33 @@ const CreateUser = ({logout, setAlert}) => {
       const res = await api.post("/users", credentials);
       return res.data;
     } catch (e) {
-      outputErrors(e.response.data.errors, setAlert)
-      return {success: false}
+      console.error(e)
+      return {success: false, errors: e.response.data.errors}
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      setAlert("Введенные пароли не совпадают", AlertTypes.DANGER)
+      setAlerts([{msg: "Введенные пароли не совпадают", type: AlertTypes.DANGER}])
+      return
     }
     try {
-      console.log("res")
       const res = await createUser({
-        credentials: {
-          username,
-          password,
-          name,
-          email,
-          isAdmin
-        }
+        username,
+        password,
+        name,
+        email,
+        isAdmin
       });
       if (res.success === true) {
-        setAlert("Пользователь создан", AlertTypes.SUCCESS)
+        setAlerts([{msg: "Пользователь создан", type: AlertTypes.SUCCESS}])
       } else {
-        setAlert("Не удалось создать пользователя", AlertTypes.PRIMARY)
+        setAlerts(res.errors.map(error => ({msg: error, type: AlertTypes.DANGER})))
       }
     } catch (errors) {
-      setAlert("Произошла непредвиденная ошибка!", AlertTypes.DANGER)
+      console.error(errors)
+      setAlerts([{msg: "Произошла непредвиденная ошибка!", type: AlertTypes.DANGER}])
     }
   }
 
@@ -125,7 +123,7 @@ const CreateUser = ({logout, setAlert}) => {
 
 CreateUser.propTypes = {
   logout: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  setAlerts: PropTypes.func.isRequired,
 };
 
 export default CreateUser;

@@ -4,14 +4,13 @@ import PropTypes from "prop-types";
 
 import Background from "../../pageComponents/Background";
 
-import {outputErrors} from "../../../utils/utils";
 import AlertTypes from "../../ui/AlertTypes";
 import api from "../../../utils/api";
 
 import "./Login.scss"
 
 
-const Login = ({setUser, setAuth, setAlert}) => {
+const Login = ({setUser, setAuth, setAlerts}) => {
 
   const navigate = useNavigate();
   const [username, setUsername] = useState();
@@ -25,7 +24,8 @@ const Login = ({setUser, setAuth, setAlert}) => {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       return res.data;
     } catch (e) {
-      outputErrors(e.response.data.errors, setAlert);
+      console.error(e)
+      return {success: false, errors: e.response.data.errors};
     }
   }
 
@@ -33,18 +33,25 @@ const Login = ({setUser, setAuth, setAlert}) => {
     e.preventDefault()
     setAuth({isLoading: true, isAuthenticated: false});
     try {
-      const user = await loginUser({
+      const res = await loginUser({
         credentials: {
           username,
           password,
         }
       });
-      setUser(user)
-      setAuth({isLoading: false, isAuthenticated: true});
-      navigate("/users");
+      if (res.success === true) {
+        setUser(res.user)
+        setAuth({isLoading: false, isAuthenticated: true});
+        navigate("/users");
+      } else {
+        setAlerts(res.errors.map(error => {
+          return {msg: error, type: AlertTypes.DANGER}
+        }))
+      }
     } catch (errors) {
+      console.error(errors)
       setAuth({isLoading: false, isAuthenticated: false});
-      setAlert("Произошла непредвиденная ошибка!", AlertTypes.DANGER)
+      setAlerts([{msg: "Произошла непредвиденная ошибка!", type: AlertTypes.DANGER}])
     }
   }
 
@@ -90,7 +97,7 @@ const Login = ({setUser, setAuth, setAlert}) => {
 
 Login.propTypes = {
   auth: PropTypes.object.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  setAlerts: PropTypes.func.isRequired,
   setAuth: PropTypes.func.isRequired,
   setUser: PropTypes.func.isRequired
 }
