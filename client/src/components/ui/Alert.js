@@ -4,7 +4,7 @@ import './Alert.scss';
 
 const Alert = ({alerts}) => {
   return (
-    <div className={'alerts-holder'}>
+    <div className={`alerts-holder ${alerts.length > 0 ? "active" : ""}`}>
       {
         alerts.map(
           (alert) => (

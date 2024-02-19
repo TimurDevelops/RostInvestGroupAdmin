@@ -11,6 +11,8 @@ import api from "../../../utils/api";
 
 import "./Users.scss"
 import AlertTypes from "../../ui/AlertTypes";
+import Dialog from "../../ui/Dialogs";
+import Button from "@mui/material/Button";
 
 
 const Users = ({logout, setAlerts}) => {
@@ -56,6 +58,8 @@ const Users = ({logout, setAlerts}) => {
       flex: "0 0 6.25%"
     }
   ]);
+  const [deleteConfirmDialogOpen, setDeleteConfirmDialogOpen] = useState(false);
+  const [usersForDeletion, setUsersForDeletion] = useState([]);
 
   const selectUser = (userId) => {
     setUsers(users.map((item) => {
@@ -72,21 +76,20 @@ const Users = ({logout, setAlerts}) => {
     }));
   }
 
-
-  const deleteUsers = async (data) => {
-    try {
-      const res = await api.delete("/auth", data);
-      return res.data;
-    } catch (e) {
-      console.error(e)
-      return {success: false, errors: e.response.data.errors};
-    }
+  const confirmDeleteUser = (userId) => {
+    const user = users.find(i => i.id === userId)
+    setUsersForDeletion([{id: userId, username: user.username}])
+    setDeleteConfirmDialogOpen(true);
+  }
+  const confirmDeleteUsers = () => {
+    const checkedUsers = users.filter(user => user.checked)
+    setUsersForDeletion(checkedUsers.map(user => ({id: user.id, username: user.username})))
+    setDeleteConfirmDialogOpen(true);
   }
 
-  const handleDelete = async (userId) => {
+  const handleDelete = async () => {
     try {
-      const user = users.find(i => i.id === userId)
-      const res = await deleteUsers({users: [{userId, username: user.username}]})
+      const res = await deleteUsers({users: usersForDeletion})
       if (res.success === true) {
         setAlerts([{msg: "Пользователь удален.", type: AlertTypes.SUCCESS}])
       } else {
@@ -97,6 +100,17 @@ const Users = ({logout, setAlerts}) => {
       setAlerts([{msg: "Произошла непредвиденная ошибка!", type: AlertTypes.DANGER}])
     }
   }
+
+  const deleteUsers = async (data) => {
+    try {
+      const res = await api.delete("/users", data);
+      return res.data;
+    } catch (e) {
+      console.error(e)
+      return {success: false, errors: e.response.data.errors};
+    }
+  }
+
 
   useEffect(() => {
     const getUsers = async () => {
@@ -110,6 +124,17 @@ const Users = ({logout, setAlerts}) => {
 
   return (
     <PageWrapper logout={() => logout()}>
+      <Dialog
+        open={deleteConfirmDialogOpen}
+        title={"Подтвердите удаление пользователей"}
+        message={`Количество удаляемых пользователей: ${usersForDeletion.length}`}
+        actions={[
+          <Button key={"cancel-delete-btn"} onClick={() => setDeleteConfirmDialogOpen(false)}>Отменить</Button>,
+          <Button key={"confirm-delete-btn"} onClick={() => handleDelete()}>Подтвердить</Button>
+        ]}
+        handleClose={() => setDeleteConfirmDialogOpen(false)}
+      />
+
       <div className="section-bg">
         <section className="section-wrapper users-wrapper">
           <div className="section-header">
@@ -124,14 +149,14 @@ const Users = ({logout, setAlerts}) => {
               <span className="table-controls-icon"><IoMdCreate/></span>
               <span className="table-controls-text"><Link to={"create-user"}>Создать</Link></span>
             </div>
-            <div className={`create-user-button`}>
+            <div className={"create-user-button"}>
               <span className="table-controls-icon"><IoMdCreate/></span>
-              <span className="table-controls-text">Удалить выбранные</span>
+              <span className="table-controls-text" onClick={() => {confirmDeleteUsers()}}>Удалить выбранные</span>
             </div>
           </div>
 
           <Table data={users} columns={columns}
-                 deleteItem={handleDelete}
+                 deleteItem={confirmDeleteUser}
                  selectItem={selectUser}
                  selectAll={selectAllUsers}/>
         </section>

@@ -16,13 +16,13 @@ import api from "./utils/api";
 import './App.css';
 import './Common.scss';
 
+
 const App = () => {
   const {user, setUser, unsetUser} = useUser()
   const [auth, setAuth] = useState({isAuthenticated: Boolean(user && user.token), isLoading: false});
   const [alertsState, setAlertsState] = useState([]);
 
   const setAlerts = (alerts, timeout = 5000) => {
-
     alerts = alerts.map(({msg, type}) => {
       const id = uuidv4();
       setTimeout(() => removeAlert(id), timeout);

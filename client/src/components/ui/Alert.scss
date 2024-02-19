@@ -7,6 +7,11 @@
   margin: 1vw;
   width: 20em;
   z-index: 1000;
+  display: none;
+}
+
+.alerts-holder.active {
+  display: block;
 }
 
 

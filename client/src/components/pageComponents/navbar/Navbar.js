@@ -3,7 +3,6 @@ import React from "react";
 import NavbarElement from "./NavbarElement";
 
 import "./Navbar.scss"
-import {string} from "prop-types";
 
 
 const Navbar = () => {

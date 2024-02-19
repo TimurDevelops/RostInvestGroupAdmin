@@ -1,0 +1,18 @@
+.dialogs-holder {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(133, 133, 133, 0.40);
+  width: 100vw;
+  height: 100vh;
+  display: none;
+
+  .dialog {
+
+  }
+
+  &.active{
+    display: block;
+  }
+}
