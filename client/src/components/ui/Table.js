@@ -41,7 +41,6 @@ const Table = ({data, columns, deleteItem}) => {
   }
 
   return (
-
     <div className="table-wrapper">
       <div className="table-head">
         {

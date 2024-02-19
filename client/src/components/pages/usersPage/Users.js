@@ -10,9 +10,10 @@ import PageWrapper from "../../pageComponents/PageWrapper";
 import api from "../../../utils/api";
 
 import "./Users.scss"
+import AlertTypes from "../../ui/AlertTypes";
 
 
-const Users = ({logout}) => {
+const Users = ({logout, setAlerts}) => {
   const [users, setUsers] = useState([]);
   const [columns] = useState([{
     id: "select-users",
@@ -54,13 +55,34 @@ const Users = ({logout}) => {
     flex: "0 0 6.25%"
   }]);
 
-  const deleteUser = () => {
+  const deleteUsers = async (data) => {
+    try {
+      const res = await api.delete("/auth", data);
+      return res.data;
+    } catch (e) {
+      console.error(e)
+      return {success: false, errors: e.response.data.errors};
+    }
+  }
 
+  const handleDelete = async (userId) => {
+    try {
+      const user = users.find(i => i.id === userId)
+      const res = await deleteUsers({users: [{userId, username: user.username}]})
+      if (res.success === true) {
+        setAlerts([{msg: "Пользователь удален.", type: AlertTypes.SUCCESS}])
+      } else {
+        setAlerts(res.errors.map(error => ({msg: error, type: AlertTypes.DANGER})))
+      }
+    } catch (errors) {
+      console.error(errors)
+      setAlerts([{msg: "Произошла непредвиденная ошибка!", type: AlertTypes.DANGER}])
+    }
   }
 
   useEffect(() => {
     const getUsers = async () => {
-      const res = await api.post('/users/get-users');
+      const res = await api.post("/users/get-users");
       setUsers(res.data["users"]);
     }
     getUsers().catch((err) => console.error(err))
@@ -88,7 +110,7 @@ const Users = ({logout}) => {
             </div>
           </div>
 
-          <Table data={users} columns={columns} deleteItem={deleteUser}/>
+          <Table data={users} columns={columns} deleteItem={handleDelete}/>
         </section>
       </div>
     </PageWrapper>
