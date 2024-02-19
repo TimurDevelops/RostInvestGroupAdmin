@@ -18,7 +18,7 @@ const Header = ({logout}) => {
             <FaSearch/>
           </div>
           <div className="search-field">
-            <input type="text" placeholder="Поиск..."/>
+            <input id="search-field" type="text" placeholder="Поиск..."/>
           </div>
 
 

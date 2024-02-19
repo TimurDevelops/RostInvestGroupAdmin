@@ -15,45 +15,63 @@ import AlertTypes from "../../ui/AlertTypes";
 
 const Users = ({logout, setAlerts}) => {
   const [users, setUsers] = useState([]);
-  const [columns] = useState([{
-    id: "select-users",
-    type: "select",
-    flex: "0 0 6.25%"
-  }, {
-    id: "username",
-    type: "link",
-    link: "user-view/",
-    label: "Логин",
-    flex: "0 0 12.5%"
-  }, {
-    id: "name",
-    label: "Имя пользователя",
-    flex: "0 0 18.75%"
-  }, {
-    id: "email",
-    label: "Почта",
-    flex: "0 0 12.5%"
-  }, {
-    id: "is_admin",
-    label: "Админ",
-    type: "checkbox",
-    flex: "0 0 6.25%"
-  }, {
-    id: "create_date",
-    type: "date",
-    label: "Дата создания",
-    flex: "0 0 18.75%"
-  }, {
-    id: "update_date",
-    type: "date",
-    label: "Дата последнего изменения",
-    flex: "0 0 18.75%"
-  }, {
-    id: "delete-user",
-    empty: true,
-    type: "delete",
-    flex: "0 0 6.25%"
-  }]);
+  const [columns] = useState([
+    {
+      id: "select-users",
+      type: "select",
+      flex: "0 0 6.25%"
+    }, {
+      id: "username",
+      type: "link",
+      link: "user-view/",
+      label: "Логин",
+      flex: "0 0 12.5%"
+    }, {
+      id: "name",
+      label: "Имя пользователя",
+      flex: "0 0 18.75%"
+    }, {
+      id: "email",
+      label: "Почта",
+      flex: "0 0 12.5%"
+    }, {
+      id: "is_admin",
+      label: "Админ",
+      type: "checkbox",
+      flex: "0 0 6.25%"
+    }, {
+      id: "create_date",
+      type: "date",
+      label: "Дата создания",
+      flex: "0 0 18.75%"
+    }, {
+      id: "update_date",
+      type: "date",
+      label: "Дата последнего изменения",
+      flex: "0 0 18.75%"
+    }, {
+      id: "delete-user",
+      empty: true,
+      type: "delete",
+      flex: "0 0 6.25%"
+    }
+  ]);
+
+  const selectUser = (userId) => {
+    setUsers(users.map((item) => {
+      if (item.id === userId) {
+        return {...item, checked: !item.checked}
+      }
+      return item
+    }));
+  }
+
+  const selectAllUsers = (value) => {
+    setUsers(users.map((item) => {
+      return {...item, checked: value}
+    }));
+  }
+
 
   const deleteUsers = async (data) => {
     try {
@@ -83,7 +101,9 @@ const Users = ({logout, setAlerts}) => {
   useEffect(() => {
     const getUsers = async () => {
       const res = await api.post("/users/get-users");
-      setUsers(res.data["users"]);
+      setUsers(res.data["users"].map((item) => {
+        return {...item, checked: false}
+      }));
     }
     getUsers().catch((err) => console.error(err))
   }, []);
@@ -110,7 +130,10 @@ const Users = ({logout, setAlerts}) => {
             </div>
           </div>
 
-          <Table data={users} columns={columns} deleteItem={handleDelete}/>
+          <Table data={users} columns={columns}
+                 deleteItem={handleDelete}
+                 selectItem={selectUser}
+                 selectAll={selectAllUsers}/>
         </section>
       </div>
     </PageWrapper>
