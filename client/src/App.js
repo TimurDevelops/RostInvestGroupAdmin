@@ -43,11 +43,11 @@ const App = () => {
     setAuth({isAuthenticated: false, isLoading: false});
   }, [unsetUser]);
 
-  useEffect(() => {
-    if (auth.isAuthenticated) {
-      api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
-    }
+  if (auth.isAuthenticated) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+  }
 
+  useEffect(() => {
     /**
      intercept any error responses from the api
      and check if the token is no longer valid.
@@ -64,7 +64,7 @@ const App = () => {
         return Promise.reject(err);
       }
     );
-  }, [logout, auth, user]);
+  }, [logout]);
 
 
   return (

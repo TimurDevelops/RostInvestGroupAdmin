@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 import {FaUsers} from "react-icons/fa";
 import {IoMdCreate} from "react-icons/io";
+import { FaGear } from "react-icons/fa6";
 
 import PageWrapper from "../../pageComponents/PageWrapper";
 
@@ -13,11 +14,10 @@ import "./EditProfile.scss"
 
 
 const EditProfile = ({logout, setAlerts, currentUser}) => {
-  console.log(currentUser)
   const navigate = useNavigate()
-  const [username, setUsername] = useState();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
   const editUser = async (data) => {
@@ -59,7 +59,7 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
       setUsername(user["username"])
       setEmail(user["email"])
       setName(user["name"])
-      setIsAdmin(user["isAdmin"])
+      setIsAdmin(user["is_admin"])
     }
     getUsers().catch((err) => console.error(err))
   }, []);
@@ -79,18 +79,21 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
             <div className="inputs-wrapper">
               <div className="form-group field">
                 <input type="input" className="form-field" placeholder="Логин" name="username" id="username"
+                       value={username}
                        onChange={e => setUsername(e.target.value)} required/>
                 <label htmlFor="username" className="form-label">Логин*</label>
               </div>
 
               <div className="form-group field">
                 <input type="email" className="form-field" placeholder="Почта" name="email" id="email"
+                       value={name}
                        onChange={e => setEmail(e.target.value)}/>
                 <label htmlFor="email" className="form-label">Почта</label>
               </div>
 
               <div className="form-group field">
                 <input type="text" className="form-field" placeholder="Имя пользователя" name="name" id="name"
+                       value={email}
                        onChange={e => setName(e.target.value)}/>
                 <label htmlFor="name" className="form-label">Имя пользователя</label>
               </div>
@@ -99,22 +102,26 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
                 <label htmlFor="name" className="form-label">Администратор:</label>
                 <input type="checkbox" className="form-field-checkbox" placeholder="Админ" name="isAdmin"
                        id="isAdmin"
+                       checked={isAdmin}
                        onChange={e => {
                          setIsAdmin(e.target.checked)
                        }}/>
               </div>
             </div>
 
-            <div className="submit-btn-wrapper">
+            <div className="submit-btn-wrapper ">
               <button type="submit" className="submit-btn">
                 <span><IoMdCreate/>Изменить</span>
               </button>
-              <button type="button" className="submit-btn">
-                <span><IoMdCreate/>Сменить пароль</span>
-              </button>
             </div>
-
           </form>
+
+          <div className="submit-btn-wrapper ">
+            <button type="button" className="submit-btn">
+              <span><FaGear/>Сменить пароль</span>
+            </button>
+          </div>
+
           <div className="back-btn-wrapper">
             <div onClick={() => navigate(-1)}>
               <div className="back-btn">
