@@ -1,0 +1,113 @@
+@import "../../../styles/Colors";
+
+
+.info-wrapper {
+  font-family: 'Manrope', sans-serif;
+  font-size: .60em;
+
+  .info-group {
+    display: flex;
+    margin: 1rem;
+
+    .info-label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      margin: 0 1em;
+    }
+
+    .info-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.back-btn-wrapper {
+  display: flex;
+  align-content: center;
+  justify-content: left;
+  margin-top: 1rem;
+
+  a {
+    text-decoration: none !important;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+
+    border: 0;
+    border-radius: .2rem;
+
+    color: $gray;
+    background: $bg-gray;
+    font-size: .6em;
+    padding: .55rem .55rem .55rem 1.55rem;
+
+    transition: background 100ms linear;
+    overflow: hidden;
+
+    span.back-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &:hover {
+      .arrows {
+        span{
+          background: $gray-two;
+        }
+        .center-arrow-line {
+          width: 1em;
+
+        }
+      }
+
+    }
+  }
+}
+
+.arrows {
+  height: .45em;
+  width: 1.5em;
+  position: relative;
+  margin-right: .5em;
+
+  .top-arrow-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: .5em;
+    height: 2px;
+    background: $gray-three;
+    transform: rotate(-45deg);
+  }
+
+  .center-arrow-line {
+    position: absolute;
+    width: 1.5em;
+    height: 2px;
+    background: $gray-three;
+    bottom: calc(50% - 1px);
+    left: 2px;
+    transition: all 100ms linear;
+  }
+
+  .bottom-arrow-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: .5em;
+    height: 2px;
+    background: $gray-three;
+    transform: rotate(45deg);
+  }
+}

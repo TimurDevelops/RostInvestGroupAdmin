@@ -6,7 +6,7 @@ import Login from "./components/pages/loginPage/Login";
 import NotFound from "./components/pages/notFoundPage/NotFound";
 import Users from "./components/pages/usersPage/Users";
 import CreateUser from "./components/pages/usersPage/CreateUser";
-
+import UserView from "./components/pages/usersPage/UserVeiw";
 import useUser from "./utils/useUser";
 import PrivateRoute from "./components/ui/PrivateRoute";
 import Alert from "./components/ui/Alert";
@@ -89,13 +89,20 @@ const App = () => {
                        auth={auth}
                        component={<CreateUser setAlerts={setAlerts} logout={logout}/>}/>
                    }/>
+            {/* Create user page */}
+            <Route path="/users/user-view/:userId"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<UserView setAlerts={setAlerts} logout={logout}/>}/>
+                   }/>
 
             {/* notFoundPage Page */}
             <Route path="/not-found"
                    element={<NotFound/>}/>
 
             {/* Navigation */}
-
             <Route path="*"
                    element={(
                      auth.isAuthenticated ? <Navigate to="/not-found"/> : <Navigate to="/login"/>

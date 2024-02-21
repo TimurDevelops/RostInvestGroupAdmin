@@ -59,6 +59,7 @@ def create_new_user():
 
 @users_blueprint.route("/get-users", methods=["POST"])
 @error_handler
+@check_is_authorised
 def get_users():
     """
     Get all users.
@@ -77,9 +78,29 @@ def get_users():
     return {"users": [User.as_dict(user) for user in users]}, 200
 
 
+@users_blueprint.route("/get-user", methods=["POST"])
+@error_handler
+@check_is_authorised
+def get_user():
+    """
+    Get user by id.
+    """
+    users_id = request.json["userId"]
+
+    db = DBHandler()
+    user = db.session.query(User).with_entities(
+        User.id,
+        User.username,
+        User.name,
+        User.email,
+        User.is_admin
+    ).filter(User.id == users_id).first()
+
+    return {"user": User.as_dict(user)}, 200
+
+
 @users_blueprint.route("", methods=["DELETE"])
 @error_handler
-@check_admin_privilege
 @check_is_authorised
 def delete_user():
     """

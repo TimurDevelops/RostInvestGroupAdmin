@@ -21,6 +21,7 @@ const CreateUser = ({logout, setAlerts}) => {
 
   const createUser = async (credentials) => {
     try {
+      // TODO check if 401 error is working properly
       const res = await api.post("/users", credentials);
       return res.data;
     } catch (e) {

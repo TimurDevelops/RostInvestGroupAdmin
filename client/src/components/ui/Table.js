@@ -37,7 +37,7 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
                     onChange={(e) => handleSelectItem(e, item.id)}
       />;
     } else if (column.type === "link") {
-      return <Link to={`${column.link}:${item.id}`}>{item[column.id]}</Link>;
+      return <Link to={`${column.link}${item.id}`}>{item[column.id]}</Link>;
     } else if (column.type === "checkbox") {
       return item[column.id] ? <span className="center green"><FaCheck/></span> :
         <span className="center red"><FaBan/></span>;

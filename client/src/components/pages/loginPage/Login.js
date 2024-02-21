@@ -19,6 +19,7 @@ const Login = ({setUser, setAuth, setAlerts}) => {
 
   const loginUser = async ({credentials}) => {
     try {
+      // TODO check if 401 error is working properly
       const res = await api.post("/auth", credentials);
       const token = res.data.token;
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;

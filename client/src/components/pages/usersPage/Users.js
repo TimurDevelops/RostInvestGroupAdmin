@@ -103,6 +103,7 @@ const Users = ({logout, setAlerts}) => {
 
   const deleteUsers = async (data) => {
     try {
+      // TODO check if 401 error is working properly
       const res = await api.delete("/users", data);
       return res.data;
     } catch (e) {
@@ -114,6 +115,7 @@ const Users = ({logout, setAlerts}) => {
 
   useEffect(() => {
     const getUsers = async () => {
+      // TODO check if 401 error is working properly
       const res = await api.post("/users/get-users");
       setUsers(res.data["users"].map((item) => {
         return {...item, checked: false}
@@ -151,7 +153,9 @@ const Users = ({logout, setAlerts}) => {
             </div>
             <div className={"create-user-button"}>
               <span className="table-controls-icon"><IoMdCreate/></span>
-              <span className="table-controls-text" onClick={() => {confirmDeleteUsers()}}>Удалить выбранные</span>
+              <span className="table-controls-text" onClick={() => {
+                confirmDeleteUsers()
+              }}>Удалить выбранные</span>
             </div>
           </div>
 
