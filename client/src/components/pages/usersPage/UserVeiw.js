@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {FaBan, FaCheck, FaUsers} from "react-icons/fa";
 import {Link, useParams} from "react-router-dom";
-import {IoIosArrowRoundBack} from "react-icons/io";
 
 import PageWrapper from "../../pageComponents/PageWrapper";
 

@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import {FaSearch} from "react-icons/fa";
 import {MdLogout} from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
 
 import "./Header.scss"
+import {Link} from "react-router-dom";
 
 
 const Header = ({logout}) => {
@@ -26,7 +28,12 @@ const Header = ({logout}) => {
       </div>
 
       <div className="logout-wrapper">
-        <div className="logout-button" onClick={() => logout()}>
+        <Link to={"/edit-profile"}>
+          <div className="header-button edit-profile-button">
+            <CgProfile/>
+          </div>
+        </Link>
+        <div className="header-button logout-button" onClick={() => logout()}>
           <MdLogout/>
         </div>
       </div>

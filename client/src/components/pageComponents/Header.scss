@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
 
-    .logout-button {
+    .header-button {
       cursor: pointer;
 
       display: flex;
@@ -65,7 +65,11 @@
       transition: color 100ms linear;
 
       &:hover {
-        color: #333333;
+        color: $gray-two;
+      }
+
+      &.edit-profile-button:hover {
+        color: $blue;
       }
     }
   }

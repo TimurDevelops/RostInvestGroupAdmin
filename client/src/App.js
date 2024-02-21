@@ -6,7 +6,9 @@ import Login from "./components/pages/loginPage/Login";
 import NotFound from "./components/pages/notFoundPage/NotFound";
 import Users from "./components/pages/usersPage/Users";
 import CreateUser from "./components/pages/usersPage/CreateUser";
+import EditProfile from "./components/pages/usersPage/EditProfile";
 import UserView from "./components/pages/usersPage/UserVeiw";
+
 import useUser from "./utils/useUser";
 import PrivateRoute from "./components/ui/PrivateRoute";
 import Alert from "./components/ui/Alert";
@@ -42,6 +44,10 @@ const App = () => {
   }, [unsetUser]);
 
   useEffect(() => {
+    if (auth.isAuthenticated) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+    }
+
     /**
      intercept any error responses from the api
      and check if the token is no longer valid.
@@ -58,7 +64,7 @@ const App = () => {
         return Promise.reject(err);
       }
     );
-  }, [logout]);
+  }, [logout, auth, user]);
 
 
   return (
@@ -71,6 +77,15 @@ const App = () => {
             <Route path="/login"
                    element={
                      <Login setAuth={setAuth} setAlerts={setAlerts} setUser={setUser} auth={auth}/>
+                   }/>
+
+            {/* Edit  */}
+            <Route path="/edit-profile"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<EditProfile setAlerts={setAlerts} logout={logout} currentUser={user}/>}/>
                    }/>
 
             {/* Users Page */}

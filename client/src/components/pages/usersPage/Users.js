@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import {FaUsers} from "react-icons/fa";
 import {IoMdCreate} from "react-icons/io";
+import { FaDeleteLeft } from "react-icons/fa6";
 
 import Table from "../../ui/Table";
 import PageWrapper from "../../pageComponents/PageWrapper";
@@ -112,7 +113,6 @@ const Users = ({logout, setAlerts}) => {
     }
   }
 
-
   useEffect(() => {
     const getUsers = async () => {
       // TODO check if 401 error is working properly
@@ -152,7 +152,7 @@ const Users = ({logout, setAlerts}) => {
               <span className="table-controls-text"><Link to={"create-user"}>Создать</Link></span>
             </div>
             <div className={"create-user-button"}>
-              <span className="table-controls-icon"><IoMdCreate/></span>
+              <span className="table-controls-icon"><FaDeleteLeft/></span>
               <span className="table-controls-text" onClick={() => {
                 confirmDeleteUsers()
               }}>Удалить выбранные</span>

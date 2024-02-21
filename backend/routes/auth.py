@@ -37,4 +37,4 @@ def authenticate_user():
         JWT_KEY,
         algorithm=JWT_ALGORITHM
     )
-    return jsonify({"success": True, "user": user.username, "token": encoded_jwt}), 200
+    return jsonify({"success": True, "user": user.username, "token": encoded_jwt, "id": user.id}), 200

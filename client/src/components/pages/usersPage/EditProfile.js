@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 import {FaUsers} from "react-icons/fa";
 import {IoMdCreate} from "react-icons/io";
@@ -8,21 +9,21 @@ import PageWrapper from "../../pageComponents/PageWrapper";
 import AlertTypes from "../../ui/AlertTypes";
 import api from "../../../utils/api";
 
-import "./Users.scss"
+import "./EditProfile.scss"
 
 
-const CreateUser = ({logout, setAlerts}) => {
+const EditProfile = ({logout, setAlerts, currentUser}) => {
+  console.log(currentUser)
+  const navigate = useNavigate()
   const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const createUser = async (credentials) => {
+  const editUser = async (data) => {
     try {
       // TODO check if 401 error is working properly
-      const res = await api.post("/users", credentials);
+      const res = await api.post("/edit-user", data);
       return res.data;
     } catch (e) {
       console.error(e)
@@ -32,20 +33,15 @@ const CreateUser = ({logout, setAlerts}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (password !== confirmPassword) {
-      setAlerts([{msg: "Введенные пароли не совпадают", type: AlertTypes.DANGER}])
-      return
-    }
     try {
-      const res = await createUser({
+      const res = await editUser({
         username,
-        password,
         name,
         email,
         isAdmin
       });
       if (res.success === true) {
-        setAlerts([{msg: "Пользователь создан", type: AlertTypes.SUCCESS}])
+        setAlerts([{msg: "Данные успешно отредактированны", type: AlertTypes.SUCCESS}])
       } else {
         setAlerts(res.errors.map(error => ({msg: error, type: AlertTypes.DANGER})))
       }
@@ -55,14 +51,27 @@ const CreateUser = ({logout, setAlerts}) => {
     }
   }
 
+  useEffect(() => {
+    const getUsers = async () => {
+      // TODO check if 401 error is working properly
+      const res = await api.post("/users/get-user", {userId: currentUser.id});
+      const user = res.data["user"]
+      setUsername(user["username"])
+      setEmail(user["email"])
+      setName(user["name"])
+      setIsAdmin(user["isAdmin"])
+    }
+    getUsers().catch((err) => console.error(err))
+  }, []);
+
   return (
     <PageWrapper logout={() => logout()}>
       <div className="section-bg">
-        <section className="section-wrapper">
+        <section className="section-wrapper user-form-section-wrapper">
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
-              <span className="section-header-text">Создать нового пользователя</span>
+              <span className="section-header-text">Отредактировать данные</span>
             </h4>
           </div>
 
@@ -72,19 +81,6 @@ const CreateUser = ({logout, setAlerts}) => {
                 <input type="input" className="form-field" placeholder="Логин" name="username" id="username"
                        onChange={e => setUsername(e.target.value)} required/>
                 <label htmlFor="username" className="form-label">Логин*</label>
-              </div>
-
-              <div className="form-group field">
-                <input type="password" className="form-field" placeholder="Пароль" name="password" id="password"
-                       onChange={e => setPassword(e.target.value)} required/>
-                <label htmlFor="password" className="form-label">Пароль*</label>
-              </div>
-
-              <div className="form-group field">
-                <input type="password" className="form-field" placeholder="Подтвердите пароль" name="confirmPassword"
-                       id="confirmPassword"
-                       onChange={e => setConfirmPassword(e.target.value)} required/>
-                <label htmlFor="confirmPassword" className="form-label">Подтвердите пароль*</label>
               </div>
 
               <div className="form-group field">
@@ -111,21 +107,39 @@ const CreateUser = ({logout, setAlerts}) => {
 
             <div className="submit-btn-wrapper">
               <button type="submit" className="submit-btn">
-                <span><IoMdCreate/>Создать</span>
+                <span><IoMdCreate/>Изменить</span>
+              </button>
+              <button type="button" className="submit-btn">
+                <span><IoMdCreate/>Сменить пароль</span>
               </button>
             </div>
 
           </form>
+          <div className="back-btn-wrapper">
+            <div onClick={() => navigate(-1)}>
+              <div className="back-btn">
+                <span className="arrows">
+                  <span className="top-arrow-line"/>
+                  <span className="center-arrow-line"/>
+                  <span className="bottom-arrow-line"/>
+                </span>
+                <span className="back-text">
+                  Вернуться
+                </span>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </PageWrapper>
   );
 }
 
-CreateUser.propTypes = {
+EditProfile.propTypes = {
+  currentUser: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   setAlerts: PropTypes.func.isRequired,
 };
 
-export default CreateUser;
+export default EditProfile;
 

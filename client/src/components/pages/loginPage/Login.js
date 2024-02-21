@@ -11,7 +11,6 @@ import "./Login.scss"
 
 
 const Login = ({setUser, setAuth, setAlerts}) => {
-
   const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -23,6 +22,7 @@ const Login = ({setUser, setAuth, setAlerts}) => {
       const res = await api.post("/auth", credentials);
       const token = res.data.token;
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      console.log(api.defaults.headers.common["Authorization"])
       return res.data;
     } catch (e) {
       console.error(e)
@@ -41,7 +41,7 @@ const Login = ({setUser, setAuth, setAlerts}) => {
         }
       });
       if (res.success === true) {
-        setUser({username: res.user, token: res.token})
+        setUser({username: res.user, token: res.token, id: res.id})
         setAuth({isLoading: false, isAuthenticated: true});
         navigate("/users");
       } else {
