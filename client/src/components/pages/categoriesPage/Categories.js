@@ -16,8 +16,8 @@ import api from "../../../utils/api";
 import "./Users.scss"
 
 
-const Products = ({logout, setAlerts}) => {
-  const [products, setProducts] = useState([]);
+const Categories = ({logout, setAlerts}) => {
+  const [categories, setCategories] = useState([]);
   const [columns] = useState([
     {
       id: "select-products",
@@ -26,7 +26,7 @@ const Products = ({logout, setAlerts}) => {
     }, {
       id: "title",
       type: "link",
-      link: "product-view/",
+      link: "category-view/",
       label: "Продукт",
       flex: "0 0 12.5%"
     }, {
@@ -44,17 +44,17 @@ const Products = ({logout, setAlerts}) => {
       label: "Дата последнего изменения",
       flex: "0 0 18.75%"
     }, {
-      id: "delete-product",
+      id: "delete-category",
       empty: true,
       type: "delete",
       flex: "0 0 6.25%"
     }
   ]);
   const [deleteConfirmDialogOpen, setDeleteConfirmDialogOpen] = useState(false);
-  const [productsForDeletion, setProductsForDeletion] = useState([]);
+  const [categoriesForDeletion, setCategoriesForDeletion] = useState([]);
 
-  const selectProduct = (productId) => {
-    setProducts(products.map((item) => {
+  const selectCategory = (productId) => {
+    setCategories(categories.map((item) => {
       if (item.id === productId) {
         return {...item, checked: !item.checked}
       }
@@ -63,26 +63,26 @@ const Products = ({logout, setAlerts}) => {
   }
 
   const selectAllProducts = (value) => {
-    setProducts(products.map((item) => {
+    setCategories(categories.map((item) => {
       return {...item, checked: value}
     }));
   }
 
-  const confirmDeleteProduct = (productId) => {
-    setProductsForDeletion([{id: productId}])
+  const confirmDeleteCategory = (productId) => {
+    setCategoriesForDeletion([{id: productId}])
     setDeleteConfirmDialogOpen(true);
   }
-  const confirmDeleteProducts = () => {
-    const checkedProducts = products.filter(product => product.checked)
-    setProductsForDeletion(checkedProducts.map(product => ({id: product.id})))
+  const confirmDeleteCategories = () => {
+    const checkedProducts = categories.filter(product => product.checked)
+    setCategoriesForDeletion(checkedProducts.map(product => ({id: product.id})))
     setDeleteConfirmDialogOpen(true);
   }
 
   const handleDelete = async () => {
     try {
-      const res = await deleteProducts({users: productsForDeletion})
+      const res = await deleteCategories({users: categoriesForDeletion})
       if (res.success === true) {
-        setAlerts([{msg: "Продукт удален.", type: AlertTypes.SUCCESS}])
+        setAlerts([{msg: "Категории удалены.", type: AlertTypes.SUCCESS}])
       } else {
         setAlerts(res.errors.map(error => ({msg: error, type: AlertTypes.DANGER})))
       }
@@ -92,10 +92,10 @@ const Products = ({logout, setAlerts}) => {
     }
   }
 
-  const deleteProducts = async (data) => {
+  const deleteCategories = async (data) => {
     try {
       // TODO check if 401 error is working properly
-      const res = await api.delete("/products", data);
+      const res = await api.delete("/categories", data);
       return res.data;
     } catch (e) {
       console.error(e)
@@ -104,22 +104,22 @@ const Products = ({logout, setAlerts}) => {
   }
 
   useEffect(() => {
-    const getProducts = async () => {
+    const getCategories = async () => {
       // TODO check if 401 error is working properly
-      const res = await api.post("/products/get-products");
-      setProducts(res.data["products"].map((item) => {
+      const res = await api.post("/categories/get-categories");
+      setCategories(res.data["categories"].map((item) => {
         return {...item, checked: false}
       }));
     }
-    getProducts().catch((err) => console.error(err))
+    getCategories().catch((err) => console.error(err))
   }, []);
 
   return (
     <PageWrapper logout={() => logout()}>
       <Dialog
         open={deleteConfirmDialogOpen}
-        title={"Подтвердите удаление продуктов"}
-        message={`Количество удаляемых продуктов: ${productsForDeletion.length}`}
+        title={"Подтвердите удаление категорий"}
+        message={`Количество удаляемых категорий: ${categoriesForDeletion.length}`}
         actions={[
           <Button key={"cancel-delete-btn"} onClick={() => setDeleteConfirmDialogOpen(false)}>Отменить</Button>,
           <Button key={"confirm-delete-btn"} onClick={() => handleDelete()}>Подтвердить</Button>
@@ -132,7 +132,7 @@ const Products = ({logout, setAlerts}) => {
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
-              <span className="section-header-text">Продукты</span>
+              <span className="section-header-text">Категории</span>
             </h4>
           </div>
 
@@ -145,14 +145,14 @@ const Products = ({logout, setAlerts}) => {
             <div className={"create-user-button"}>
               <span className="table-controls-icon"><FaDeleteLeft/></span>
               <span className="table-controls-text" onClick={() => {
-                confirmDeleteProducts()
+                confirmDeleteCategories()
               }}>Удалить выбранные</span>
             </div>
           </div>
 
-          <Table data={products} columns={columns}
-                 deleteItem={confirmDeleteProduct}
-                 selectItem={selectProduct}
+          <Table data={categories} columns={columns}
+                 deleteItem={confirmDeleteCategory}
+                 selectItem={selectCategory}
                  selectAll={selectAllProducts}/>
         </section>
       </div>
@@ -160,9 +160,9 @@ const Products = ({logout, setAlerts}) => {
   );
 }
 
-Products.propTypes = {
+Categories.propTypes = {
   logout: PropTypes.func.isRequired,
   setAlerts: PropTypes.func.isRequired
 };
 
-export default Products;
+export default Categories;
