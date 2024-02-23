@@ -20,6 +20,7 @@ USER_DOES_NOT_EXIST_MESSAGE = "Пользователь не найден!"
 
 # DELETE CATEGORY
 CATEGORY_DOES_NOT_EXIST_MESSAGE = "Категория не найдена!"
+PRODUCT_DOES_NOT_EXIST_MESSAGE = "Продукт не найден!"
 
 # EDIT USER
 EDITING_FOREIGN_USER = "Редактирование данных чужого пользователя запрещено!"

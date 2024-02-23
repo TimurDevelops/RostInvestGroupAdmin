@@ -1,15 +1,12 @@
-import jwt
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 
 from backend.db.db import DBHandler
-from backend.models.models import User, Category
-from backend.settings import MIN_PASSWORD_LENGTH, JWT_ALGORITHM, JWT_KEY
-from backend.utils.cipher import encrypt
+from backend.models.models import Category, Product
 from backend.utils.decorators import check_admin_privilege, check_is_authorised
 from backend.utils.error_handler import error_handler
-from backend.utils.errors import InvalidFieldsException, UserNotAuthorisedException
-from backend.utils.messages import MISSING_LOGIN_PASSWORD_MESSAGE, USER_EXISTS_MESSAGE, PASSWORD_TOO_SHORT_MESSAGE, \
-    USER_DOES_NOT_EXIST_MESSAGE, EDITING_FOREIGN_USER, MISSING_REQUIRED_FIELDS_MESSAGE, CATEGORY_DOES_NOT_EXIST_MESSAGE
+from backend.utils.errors import InvalidFieldsException
+from backend.utils.messages import USER_DOES_NOT_EXIST_MESSAGE, MISSING_REQUIRED_FIELDS_MESSAGE, \
+    CATEGORY_DOES_NOT_EXIST_MESSAGE
 
 users_blueprint = Blueprint("categories", __name__)
 
@@ -26,7 +23,7 @@ def create_new_category():
     parent_category_id = request.json["parentCategoryId"]
     category_image = request.json["categoryImage"]
 
-    if not category_title or not parent_category_id or not category_image:
+    if not category_title or not category_image:
         raise InvalidFieldsException(message=MISSING_REQUIRED_FIELDS_MESSAGE)
 
     db = DBHandler()
@@ -46,7 +43,7 @@ def get_categories():
     db = DBHandler()
     categories = db.session.query(Category).all()
 
-    return {"users": [Category.as_dict(category) for category in categories]}, 200
+    return {"categories": [Category.as_dict(category) for category in categories]}, 200
 
 
 @users_blueprint.route("/get-category", methods=["POST"])
@@ -61,10 +58,10 @@ def get_category():
     db = DBHandler()
     category = db.session.query(Category).filter(Category.id == category_id).first()
 
-    return {"user": Category.as_dict(category)}, 200
+    return {"category": Category.as_dict(category)}, 200
 
 
-@users_blueprint.route("/get-category-by-parent", methods=["POST"])
+@users_blueprint.route("/get-categories-by-parent", methods=["POST"])
 @error_handler
 @check_is_authorised
 def get_categories_by_parent():
@@ -76,7 +73,7 @@ def get_categories_by_parent():
     db = DBHandler()
     categories = db.session.query(Category).filter(Category.parent_category_id == category_id).all()
 
-    return {"users": [Category.as_dict(category) for category in categories]}, 200
+    return {"categories": [Category.as_dict(category) for category in categories]}, 200
 
 
 def delete_image(image_path):
@@ -98,10 +95,13 @@ def delete_category():
         if not row:
             raise InvalidFieldsException(message=CATEGORY_DOES_NOT_EXIST_MESSAGE)
 
-        delete_image(category.parent_category_id)
+        delete_image(row.category_image)
+        products = db.session.query(Product).filter(Product.parent_category_id == row.id).all()
+        for product in products:
+            product.parent_category_id = None
 
     categories_ids = [category.id for category in categories]
-    db.session.query(Category).where(User.id.in_(categories_ids)).delete()
+    db.session.query(Category).where(Category.id.in_(categories_ids)).delete()
     db.session.commit()
 
     return {"success": True}, 200
