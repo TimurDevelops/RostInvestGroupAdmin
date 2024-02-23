@@ -1,7 +1,9 @@
+import jwt
 from flask import Blueprint, request
 
 from backend.db.db import DBHandler
 from backend.models.models import Product, Category
+from backend.settings import JWT_KEY, JWT_ALGORITHM
 from backend.utils.decorators import check_admin_privilege, check_is_authorised
 from backend.utils.error_handler import error_handler
 from backend.utils.errors import InvalidFieldsException
@@ -19,6 +21,11 @@ def create_new_product():
     """
     Create a new product.
     """
+    token = request.headers.get("Authorization", None)
+    token = str.replace(str(token), "Bearer ", "")
+    token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
+    authorized_user_name = token_data.get("username")
+
     title = request.json["productTitle"]
     description = request.json["productDescription"]
     parent_category_id = request.json["parentProductId"]
@@ -35,7 +42,7 @@ def create_new_product():
             raise InvalidFieldsException(message=CATEGORY_DOES_NOT_EXIST_MESSAGE)
 
     db.session.add(Product(title=title, description=description, parent_category_id=parent_category_id,
-                           product_image=product_image, product_price=product_price))
+                           product_image=product_image, product_price=product_price, last_editor=authorized_user_name))
     db.session.commit()
 
     return {"success": True}, 201
@@ -123,6 +130,10 @@ def edit_product():
     """
     Edit user.
     """
+    token = request.headers.get("Authorization", None)
+    token = str.replace(str(token), "Bearer ", "")
+    token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
+    authorized_user_name = token_data.get("username")
 
     product_id = request.json["productId"]
     product_title = request.json["productTitle"]
@@ -145,6 +156,7 @@ def edit_product():
     product.parent_category_id = parent_category_id
     product.product_image = product_image
     product.product_price = product_price
+    product.last_editor = authorized_user_name
 
     db.session.commit()
 

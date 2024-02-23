@@ -1,7 +1,9 @@
+import jwt
 from flask import Blueprint, request
 
 from backend.db.db import DBHandler
 from backend.models.models import Category, Product
+from backend.settings import JWT_ALGORITHM, JWT_KEY
 from backend.utils.decorators import check_admin_privilege, check_is_authorised
 from backend.utils.error_handler import error_handler
 from backend.utils.errors import InvalidFieldsException
@@ -19,6 +21,11 @@ def create_new_category():
     """
     Create a new category.
     """
+    token = request.headers.get("Authorization", None)
+    token = str.replace(str(token), "Bearer ", "")
+    token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
+    authorized_user_name = token_data.get("username")
+
     category_title = request.json["categoryTitle"]
     parent_category_id = request.json["parentCategoryId"]
     category_image = request.json["categoryImage"]
@@ -27,7 +34,8 @@ def create_new_category():
         raise InvalidFieldsException(message=MISSING_REQUIRED_FIELDS_MESSAGE)
 
     db = DBHandler()
-    db.session.add(Category(title=category_title, parent_category_id=parent_category_id, category_image=category_image))
+    db.session.add(Category(title=category_title, parent_category_id=parent_category_id,
+                            category_image=category_image, last_editor=authorized_user_name))
     db.session.commit()
 
     return {"success": True}, 201
@@ -114,6 +122,10 @@ def edit_category():
     """
     Edit user.
     """
+    token = request.headers.get("Authorization", None)
+    token = str.replace(str(token), "Bearer ", "")
+    token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
+    authorized_user_name = token_data.get("username")
 
     category_id = request.json["categoryId"]
     category_title = request.json["categoryTitle"]
@@ -128,6 +140,7 @@ def edit_category():
     row.category_title = category_title
     row.parent_category_id = parent_category_id
     row.category_image = category_image
+    row.last_editor = authorized_user_name
 
     db.session.commit()
 

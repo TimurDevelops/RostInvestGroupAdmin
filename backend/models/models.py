@@ -47,6 +47,7 @@ class Category(Base):
     title: Mapped[str] = mapped_column(String, nullable=True)
     parent_category_id: Mapped[int] = mapped_column(Integer, ForeignKey("category"))
     category_image: Mapped[str] = mapped_column(String, nullable=True)
+    last_editor: Mapped[str] = mapped_column(String, nullable=False)
     create_date: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False, default=func.now())
     update_date: Mapped[datetime.datetime] = mapped_column(
         DateTime,
@@ -65,6 +66,7 @@ class Product(Base):
     parent_category_id: Mapped[int] = mapped_column(Integer, ForeignKey("category"))
     product_image: Mapped[str] = mapped_column(String, nullable=True)
     product_price: Mapped[str] = mapped_column(String, nullable=True)
+    last_editor: Mapped[str] = mapped_column(String, nullable=False)
     create_date: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False, default=func.now())
     update_date: Mapped[datetime.datetime] = mapped_column(
         DateTime,
