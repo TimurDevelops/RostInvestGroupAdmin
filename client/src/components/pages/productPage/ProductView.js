@@ -12,7 +12,7 @@ import "./UserView.scss"
 import AlertTypes from "../../ui/AlertTypes";
 
 
-const ProductView = ({logout, setAlerts, currentUser}) => {
+const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
   const {productId} = useParams();
   const [categories, setCategories] = useState([]);
 
@@ -37,7 +37,8 @@ const ProductView = ({logout, setAlerts, currentUser}) => {
     e.preventDefault()
     try {
       const res = await editProduct({
-        id: currentUser.id,
+        id: currentProduct.id,
+        userId: currentUser.id,
         title,
         description,
         category,
@@ -158,6 +159,7 @@ ProductView.propTypes = {
   logout: PropTypes.func.isRequired,
   setAlerts: PropTypes.func.isRequired,
   currentUser: PropTypes.object,
+  currentProduct: PropTypes.object,
 };
 
 export default ProductView;

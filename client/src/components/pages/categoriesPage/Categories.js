@@ -62,7 +62,7 @@ const Categories = ({logout, setAlerts}) => {
     }));
   }
 
-  const selectAllProducts = (value) => {
+  const selectAllCategories = (value) => {
     setCategories(categories.map((item) => {
       return {...item, checked: value}
     }));
@@ -153,7 +153,7 @@ const Categories = ({logout, setAlerts}) => {
           <Table data={categories} columns={columns}
                  deleteItem={confirmDeleteCategory}
                  selectItem={selectCategory}
-                 selectAll={selectAllProducts}/>
+                 selectAll={selectAllCategories}/>
         </section>
       </div>
     </PageWrapper>
