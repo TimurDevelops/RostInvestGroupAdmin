@@ -11,7 +11,7 @@ import api from "../../../utils/api";
 import "./UserView.scss"
 
 
-const CreateProduct = ({logout}) => {
+const ProductView = ({logout}) => {
   const {productId} = useParams();
   const [categories, setCategories] = useState([]);
 
@@ -54,11 +54,6 @@ const CreateProduct = ({logout}) => {
 
           <form className="login-form" onSubmit={e => handleSubmit(e)}>
             <div className="inputs-wrapper">
-              title: setTitle
-              description: setDescription
-              category: setCategory
-              productImage: setProductImage
-              productPrice: setProductPrice
               <div className="form-group field">
                 <input type="input" className="form-field" placeholder="Наименование продукта" name="title" id="title"
                        value={title}
@@ -124,9 +119,9 @@ const CreateProduct = ({logout}) => {
   );
 }
 
-CreateProduct.propTypes = {
+ProductView.propTypes = {
   logout: PropTypes.func.isRequired,
   setAlerts: PropTypes.func.isRequired
 };
 
-export default CreateProduct;
+export default ProductView;
