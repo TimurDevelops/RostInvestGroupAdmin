@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import {FaSearch} from "react-icons/fa";
 import {MdLogout} from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
+import {CgProfile} from "react-icons/cg";
 
 import "./Header.scss"
 

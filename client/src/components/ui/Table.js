@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import {FaCheck, FaBan} from "react-icons/fa";
+import {FaCheck, FaBan, FaSearch} from "react-icons/fa";
 import {FaTrashAlt} from "react-icons/fa";
 
 
@@ -10,6 +10,32 @@ import "./Table.scss"
 
 const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
   const [allItemsSelected, setAllItemsSelected] = useState(false);
+  const [sortingColumn, setSortingColumn] = useState({id: "", order: "ASC"});
+  const [filterValue, setFilterValue] = useState();
+
+  const [displayedData, setDisplayedData] = useState([])
+
+  useEffect(() => {
+    setDisplayedData(data.filter(item => {
+      for (const value of Object.values(item)) {
+        if (value.lower().includes(value.lower())) return true
+      }
+      return false
+    }).sort((a, b) => {
+      if (sortingColumn.order === "ASC") {
+        return a[sortingColumn.id] < b[sortingColumn.id]
+      } else {
+        return a[sortingColumn.id] >= b[sortingColumn.id]
+      }
+    }))
+  }, [data, sortingColumn, filterValue])
+
+  const changeSortingOrder = (column) => {
+    setSortingColumn({
+      id: column.id,
+      type: column.id === sortingColumn.id ? sortingColumn.type === "ASC" ? "DES" : "ASC" : "ASC"
+    })
+  }
 
   const handleSelectAll = () => {
     const newSetAllItemsSelected = !allItemsSelected
@@ -18,7 +44,7 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
   }
   const handleSelectItem = (e, itemId) => {
     if (e.target.checked) {
-      const uncheckedItems = data.filter(item => item.id !== itemId && !item.checked)
+      const uncheckedItems = displayedData.filter(item => item.id !== itemId && !item.checked)
       if (uncheckedItems.length === 0 && !allItemsSelected) {
         setAllItemsSelected(true)
       }
@@ -57,12 +83,38 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
                     onChange={handleSelectAll}
       />;
     } else {
-      return column.label;
+      return (
+        <div className="row-header">
+          <div className="row-header-title">{column.label}</div>
+          <div className="sort-order-arrows" onClick={() => changeSortingOrder(column)}>
+            {
+              column.id === sortingColumn.id ?
+                sortingColumn.type === "ASC" ? "DOWN" : "UP"
+                : "UP DOWN"
+            }
+          </div>
+        </div>
+      );
     }
   }
 
   return (
     <div className="table-wrapper">
+
+      <div className="form-group field">
+        <input type="password" className="form-field" placeholder="Пароль" name="table-search"
+               onChange={e => setFilterValue(e.target.value)}/>
+        <label htmlFor="password" className="form-label">
+          <div className="m-glass">
+            <FaSearch/>
+          </div>
+          <div className="table-search-title">
+            Поиск
+          </div>
+        </label>
+      </div>
+
+
       <div className="table-head">
         {
           columns.map(column => (
@@ -73,7 +125,7 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
         }
       </div>
       {
-        data.map(item => (
+        displayedData.map(item => (
           <div className="table-row" key={item.id}>
             {
               columns.map(column => (
@@ -90,7 +142,7 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
 }
 
 Table.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(Object).isRequired,
   columns: PropTypes.array.isRequired,
   selectItem: PropTypes.func.isRequired,
   selectAll: PropTypes.func.isRequired,
