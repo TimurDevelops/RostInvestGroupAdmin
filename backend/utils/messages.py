@@ -18,5 +18,11 @@ REQUIRES_ADMIN_PRIVILEGE_MESSAGE = "Для совершения данного �
 # DELETE USER
 USER_DOES_NOT_EXIST_MESSAGE = "Пользователь не найден!"
 
+# DELETE CATEGORY
+CATEGORY_DOES_NOT_EXIST_MESSAGE = "Категория не найдена!"
+
 # EDIT USER
 EDITING_FOREIGN_USER = "Редактирование данных чужого пользователя запрещено!"
+
+# CREATE CATEGORY FORM
+MISSING_REQUIRED_FIELDS_MESSAGE = "Отсутствуют обязательные поля!"
