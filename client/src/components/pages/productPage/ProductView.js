@@ -9,9 +9,10 @@ import PageWrapper from "../../pageComponents/PageWrapper";
 import api from "../../../utils/api";
 
 import "./UserView.scss"
+import AlertTypes from "../../ui/AlertTypes";
 
 
-const ProductView = ({logout}) => {
+const ProductView = ({logout, setAlerts, currentUser}) => {
   const {productId} = useParams();
   const [categories, setCategories] = useState([]);
 
@@ -20,6 +21,39 @@ const ProductView = ({logout}) => {
   const [category, setCategory] = useState("");
   const [productImage, setProductImage] = useState("");
   const [productPrice, setProductPrice] = useState("");
+
+  const editProduct = async (data) => {
+    try {
+      // TODO check if 401 error is working properly
+      const res = await api.post("/products/edit-product", data);
+      return res.data;
+    } catch (e) {
+      console.error(e)
+      return {success: false, errors: e.response.data.errors}
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await editProduct({
+        id: currentUser.id,
+        title,
+        description,
+        category,
+        productImage,
+        productPrice,
+      });
+      if (res.success === true) {
+        setAlerts([{msg: "Данные успешно отредактированны", type: AlertTypes.SUCCESS}])
+      } else {
+        setAlerts(res.errors.map(error => ({msg: error, type: AlertTypes.DANGER})))
+      }
+    } catch (errors) {
+      console.error(errors)
+      setAlerts([{msg: "Произошла непредвиденная ошибка!", type: AlertTypes.DANGER}])
+    }
+  }
 
   useEffect(() => {
     const getProduct = async () => {
@@ -62,7 +96,8 @@ const ProductView = ({logout}) => {
               </div>
 
               <div className="form-group field">
-                <input type="textarea" className="form-field" placeholder="Описание продукта" name="description" id="description"
+                <input type="textarea" className="form-field" placeholder="Описание продукта" name="description"
+                       id="description"
                        value={description}
                        onChange={e => setDescription(e.target.value)} required/>
                 <label htmlFor="description" className="form-label">Описание продукта*</label>
@@ -121,7 +156,8 @@ const ProductView = ({logout}) => {
 
 ProductView.propTypes = {
   logout: PropTypes.func.isRequired,
-  setAlerts: PropTypes.func.isRequired
+  setAlerts: PropTypes.func.isRequired,
+  currentUser: PropTypes.object,
 };
 
 export default ProductView;

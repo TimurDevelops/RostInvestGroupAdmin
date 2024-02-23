@@ -7,11 +7,12 @@ import {IoMdCreate} from "react-icons/io";
 import PageWrapper from "../../pageComponents/PageWrapper";
 
 import api from "../../../utils/api";
+import AlertTypes from "../../ui/AlertTypes";
 
 // import "./UserView.scss"
 
 
-const CreateProduct = ({logout}) => {
+const CreateProduct = ({logout, setAlerts, currentUser}) => {
   const {productId} = useParams();
   const [categories, setCategories] = useState([]);
 
@@ -27,9 +28,41 @@ const CreateProduct = ({logout}) => {
       const categories = res.data["categories"]
       setCategories(categories)
     }
-    getProduct().catch((err) => console.error(err))
     getCategory().catch((err) => console.error(err))
   }, []);
+
+  const createProduct = async (data) => {
+    try {
+      // TODO check if 401 error is working properly
+      const res = await api.post("/products", data);
+      return res.data;
+    } catch (e) {
+      console.error(e)
+      return {success: false, errors: e.response.data.errors}
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await createProduct({
+        id: currentUser.id,
+        title,
+        description,
+        category,
+        productImage,
+        productPrice,
+      });
+      if (res.success === true) {
+        setAlerts([{msg: "Продукт создан", type: AlertTypes.SUCCESS}])
+      } else {
+        setAlerts(res.errors.map(error => ({msg: error, type: AlertTypes.DANGER})))
+      }
+    } catch (errors) {
+      console.error(errors)
+      setAlerts([{msg: "Произошла непредвиденная ошибка!", type: AlertTypes.DANGER}])
+    }
+  }
 
   return (
     <PageWrapper logout={() => logout()}>
@@ -112,7 +145,8 @@ const CreateProduct = ({logout}) => {
 
 CreateProduct.propTypes = {
   logout: PropTypes.func.isRequired,
-  setAlerts: PropTypes.func.isRequired
+  setAlerts: PropTypes.func.isRequired,
+  currentUser: PropTypes.object,
 };
 
 export default CreateProduct;
