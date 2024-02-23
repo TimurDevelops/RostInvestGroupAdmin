@@ -15,33 +15,32 @@ import api from "../../../utils/api";
 
 import "./Users.scss"
 
-
-const Users = ({logout, setAlerts}) => {
-  const [users, setUsers] = useState([]);
+   // id
+  // title
+  // description
+  // parent_category_id
+  // product_image
+  // product_price
+  // last_editor
+  // create_date
+  // update_date
+const Products = ({logout, setAlerts}) => {
+  const [products, setProducts] = useState([]);
   const [columns] = useState([
     {
-      id: "select-users",
+      id: "select-products",
       type: "select",
       flex: "0 0 6.25%"
     }, {
-      id: "username",
+      id: "title",
       type: "link",
-      link: "user-view/",
-      label: "Логин",
+      link: "product-view/",
+      label: "Продукт",
       flex: "0 0 12.5%"
     }, {
-      id: "name",
-      label: "Имя пользователя",
-      flex: "0 0 18.75%"
-    }, {
-      id: "email",
-      label: "Почта",
+      id: "last_editor",
+      label: "Пользователь",
       flex: "0 0 12.5%"
-    }, {
-      id: "is_admin",
-      label: "Админ",
-      type: "checkbox",
-      flex: "0 0 6.25%"
     }, {
       id: "create_date",
       type: "date",
@@ -53,46 +52,45 @@ const Users = ({logout, setAlerts}) => {
       label: "Дата последнего изменения",
       flex: "0 0 18.75%"
     }, {
-      id: "delete-user",
+      id: "delete-product",
       empty: true,
       type: "delete",
       flex: "0 0 6.25%"
     }
   ]);
   const [deleteConfirmDialogOpen, setDeleteConfirmDialogOpen] = useState(false);
-  const [usersForDeletion, setUsersForDeletion] = useState([]);
+  const [productsForDeletion, setProductsForDeletion] = useState([]);
 
-  const selectUser = (userId) => {
-    setUsers(users.map((item) => {
-      if (item.id === userId) {
+  const selectProduct = (productId) => {
+    setProducts(products.map((item) => {
+      if (item.id === productId) {
         return {...item, checked: !item.checked}
       }
       return item
     }));
   }
 
-  const selectAllUsers = (value) => {
-    setUsers(users.map((item) => {
+  const selectAllProducts = (value) => {
+    setProducts(products.map((item) => {
       return {...item, checked: value}
     }));
   }
 
-  const confirmDeleteUser = (userId) => {
-    const user = users.find(i => i.id === userId)
-    setUsersForDeletion([{id: userId, username: user.username}])
+  const confirmDeleteProduct = (productId) => {
+    setProductsForDeletion([{id: productId}])
     setDeleteConfirmDialogOpen(true);
   }
-  const confirmDeleteUsers = () => {
-    const checkedUsers = users.filter(user => user.checked)
-    setUsersForDeletion(checkedUsers.map(user => ({id: user.id, username: user.username})))
+  const confirmDeleteProducts = () => {
+    const checkedProducts = products.filter(product => product.checked)
+    setProductsForDeletion(checkedProducts.map(product => ({id: product.id})))
     setDeleteConfirmDialogOpen(true);
   }
 
   const handleDelete = async () => {
     try {
-      const res = await deleteUsers({users: usersForDeletion})
+      const res = await deleteProducts({users: productsForDeletion})
       if (res.success === true) {
-        setAlerts([{msg: "Пользователь удален.", type: AlertTypes.SUCCESS}])
+        setAlerts([{msg: "Продукт удален.", type: AlertTypes.SUCCESS}])
       } else {
         setAlerts(res.errors.map(error => ({msg: error, type: AlertTypes.DANGER})))
       }
@@ -102,10 +100,10 @@ const Users = ({logout, setAlerts}) => {
     }
   }
 
-  const deleteUsers = async (data) => {
+  const deleteProducts = async (data) => {
     try {
       // TODO check if 401 error is working properly
-      const res = await api.delete("/users", data);
+      const res = await api.delete("/products", data);
       return res.data;
     } catch (e) {
       console.error(e)
@@ -114,22 +112,22 @@ const Users = ({logout, setAlerts}) => {
   }
 
   useEffect(() => {
-    const getUsers = async () => {
+    const getProducts = async () => {
       // TODO check if 401 error is working properly
-      const res = await api.post("/users/get-users");
-      setUsers(res.data["users"].map((item) => {
+      const res = await api.post("/products/get-products");
+      setProducts(res.data["products"].map((item) => {
         return {...item, checked: false}
       }));
     }
-    getUsers().catch((err) => console.error(err))
+    getProducts().catch((err) => console.error(err))
   }, []);
 
   return (
     <PageWrapper logout={() => logout()}>
       <Dialog
         open={deleteConfirmDialogOpen}
-        title={"Подтвердите удаление пользователей"}
-        message={`Количество удаляемых пользователей: ${usersForDeletion.length}`}
+        title={"Подтвердите удаление продуктов"}
+        message={`Количество удаляемых продуктов: ${productsForDeletion.length}`}
         actions={[
           <Button key={"cancel-delete-btn"} onClick={() => setDeleteConfirmDialogOpen(false)}>Отменить</Button>,
           <Button key={"confirm-delete-btn"} onClick={() => handleDelete()}>Подтвердить</Button>
@@ -142,7 +140,7 @@ const Users = ({logout, setAlerts}) => {
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
-              <span className="section-header-text">Пользователи</span>
+              <span className="section-header-text">Продукты</span>
             </h4>
           </div>
 
@@ -151,28 +149,28 @@ const Users = ({logout, setAlerts}) => {
               <span className="table-controls-icon"><IoMdCreate/></span>
               <span className="table-controls-text"><Link to={"create-user"}>Создать</Link></span>
             </div>
+            {/*TODO rename from user and move styles*/}
             <div className={"create-user-button"}>
               <span className="table-controls-icon"><FaDeleteLeft/></span>
               <span className="table-controls-text" onClick={() => {
-                confirmDeleteUsers()
+                confirmDeleteProducts()
               }}>Удалить выбранные</span>
             </div>
           </div>
 
-          <Table data={users} columns={columns}
-                 deleteItem={confirmDeleteUser}
-                 selectItem={selectUser}
-                 selectAll={selectAllUsers}/>
+          <Table data={products} columns={columns}
+                 deleteItem={confirmDeleteProduct}
+                 selectItem={selectProduct}
+                 selectAll={selectAllProducts}/>
         </section>
       </div>
     </PageWrapper>
   );
 }
 
-Users.propTypes = {
+Products.propTypes = {
   logout: PropTypes.func.isRequired,
   setAlerts: PropTypes.func.isRequired
 };
 
-export default Users;
-
+export default Products;
