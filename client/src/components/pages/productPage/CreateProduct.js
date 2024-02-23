@@ -13,7 +13,6 @@ import AlertTypes from "../../ui/AlertTypes";
 
 
 const CreateProduct = ({logout, setAlerts, currentUser}) => {
-  const {productId} = useParams();
   const [categories, setCategories] = useState([]);
 
   const [title, setTitle] = useState("");
@@ -24,7 +23,7 @@ const CreateProduct = ({logout, setAlerts, currentUser}) => {
 
   useEffect(() => {
     const getCategory = async () => {
-      const res = await api.post("/categories/get-categories", {productId});
+      const res = await api.post("/categories/get-categories");
       const categories = res.data["categories"]
       setCategories(categories)
     }
