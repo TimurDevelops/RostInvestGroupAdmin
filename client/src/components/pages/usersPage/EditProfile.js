@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 import {FaUsers} from "react-icons/fa";
 import {IoMdCreate} from "react-icons/io";
-import { FaGear } from "react-icons/fa6";
+import {FaGear} from "react-icons/fa6";
 
 import PageWrapper from "../../pageComponents/PageWrapper";
 
@@ -15,6 +15,7 @@ import "./EditProfile.scss"
 
 const EditProfile = ({logout, setAlerts, currentUser}) => {
   const navigate = useNavigate()
+
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
   const editUser = async (data) => {
     try {
       // TODO check if 401 error is working properly
-      const res = await api.post("/edit-user", data);
+      const res = await api.post("/users/edit-user", data);
       return res.data;
     } catch (e) {
       console.error(e)
@@ -35,6 +36,7 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
     e.preventDefault()
     try {
       const res = await editUser({
+        id: currentUser.id,
         username,
         name,
         email,
@@ -86,14 +88,14 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
 
               <div className="form-group field">
                 <input type="email" className="form-field" placeholder="Почта" name="email" id="email"
-                       value={name}
+                       value={email}
                        onChange={e => setEmail(e.target.value)}/>
                 <label htmlFor="email" className="form-label">Почта</label>
               </div>
 
               <div className="form-group field">
                 <input type="text" className="form-field" placeholder="Имя пользователя" name="name" id="name"
-                       value={email}
+                       value={name}
                        onChange={e => setName(e.target.value)}/>
                 <label htmlFor="name" className="form-label">Имя пользователя</label>
               </div>
@@ -117,9 +119,9 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
           </form>
 
           <div className="submit-btn-wrapper ">
-            <button type="button" className="submit-btn">
+            <Link to={"/change-password"} className="submit-btn">
               <span><FaGear/>Сменить пароль</span>
-            </button>
+            </Link>
           </div>
 
           <div className="back-btn-wrapper">
@@ -143,9 +145,9 @@ const EditProfile = ({logout, setAlerts, currentUser}) => {
 }
 
 EditProfile.propTypes = {
-  currentUser: PropTypes.object.isRequired,
+  currentUser: PropTypes.object,
   logout: PropTypes.func.isRequired,
-  setAlerts: PropTypes.func.isRequired,
+  setAlerts: PropTypes.func.isRequired
 };
 
 export default EditProfile;

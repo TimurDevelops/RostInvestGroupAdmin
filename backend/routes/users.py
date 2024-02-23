@@ -1,14 +1,15 @@
+import jwt
 from flask import Blueprint, request, jsonify
 
 from backend.db.db import DBHandler
 from backend.models.models import User
-from backend.settings import MIN_PASSWORD_LENGTH
+from backend.settings import MIN_PASSWORD_LENGTH, JWT_ALGORITHM, JWT_KEY
 from backend.utils.cipher import encrypt
 from backend.utils.decorators import check_admin_privilege, check_is_authorised
 from backend.utils.error_handler import error_handler
-from backend.utils.errors import InvalidFieldsException
+from backend.utils.errors import InvalidFieldsException, UserNotAuthorisedException
 from backend.utils.messages import MISSING_LOGIN_PASSWORD_MESSAGE, USER_EXISTS_MESSAGE, PASSWORD_TOO_SHORT_MESSAGE, \
-    USER_DOES_NOT_EXIST_MESSAGE
+    USER_DOES_NOT_EXIST_MESSAGE, EDITING_FOREIGN_USER
 
 users_blueprint = Blueprint("user", __name__)
 
@@ -33,7 +34,7 @@ def create_user():
     db.session.add(User(username=username, password=password_hash, name=name, email=email, is_admin=is_admin))
     db.session.commit()
 
-    return jsonify({"success": True}), 201
+    return {"success": True}, 201
 
 
 @users_blueprint.route("/create_default", methods=["POST"])
@@ -119,3 +120,64 @@ def delete_user():
     db.session.commit()
 
     return {"success": True}, 200
+
+
+@users_blueprint.route("/edit-user", methods=["POST"])
+@error_handler
+@check_is_authorised
+def edit_user():
+    """
+    Edit user.
+    """
+    token = request.headers.get("Authorization", None)
+    token = str.replace(str(token), "Bearer ", "")
+    token_data = jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM])
+    authorized_user_id = token_data.get("id")
+
+    user_id = request.json["id"]
+    username = request.json["username"]
+    name = request.json["name"]
+    email = request.json["email"]
+    is_admin = request.json["isAdmin"]
+
+    if authorized_user_id != user_id:
+        raise UserNotAuthorisedException(message=EDITING_FOREIGN_USER)
+
+    db = DBHandler()
+
+    row = db.session.query(User).filter(User.id == user_id).first()
+    if not row:
+        raise InvalidFieldsException(message=USER_DOES_NOT_EXIST_MESSAGE)
+    row.username = username
+    row.name = name
+    row.email = email
+    row.is_admin = is_admin
+
+    db.session.commit()
+
+    return {"success": True}, 200
+
+
+@users_blueprint.route("/change-password", methods=["POST"])
+@error_handler
+@check_is_authorised
+def change_password():
+    """
+    Change password.
+    """
+    password = request.json["password"]
+    user_id = request.json["userId"]
+
+    if len(password) < MIN_PASSWORD_LENGTH:
+        raise InvalidFieldsException(message=PASSWORD_TOO_SHORT_MESSAGE)
+
+    db = DBHandler()
+    password_hash = encrypt(password)
+    row = db.session.query(User).filter(User.id == user_id).first()
+    if not row:
+        raise InvalidFieldsException(message=USER_DOES_NOT_EXIST_MESSAGE)
+    row.password = password_hash
+
+    db.session.commit()
+
+    return jsonify({"success": True}), 201

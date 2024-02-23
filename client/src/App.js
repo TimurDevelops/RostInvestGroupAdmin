@@ -17,12 +17,14 @@ import api from "./utils/api";
 
 import './App.css';
 import './Common.scss';
+import ChangePassword from "./components/pages/usersPage/ChangePassword";
 
 
 const App = () => {
   const {user, setUser, unsetUser} = useUser()
   const [auth, setAuth] = useState({isAuthenticated: Boolean(user && user.token), isLoading: false});
   const [alertsState, setAlertsState] = useState([]);
+  // TODO useHistory hook
 
   const setAlerts = (alerts, timeout = 5000) => {
     alerts = alerts.map(({msg, type}) => {
@@ -86,6 +88,15 @@ const App = () => {
                      <PrivateRoute
                        auth={auth}
                        component={<EditProfile setAlerts={setAlerts} logout={logout} currentUser={user}/>}/>
+                   }/>
+
+            {/* Change Password */}
+            <Route path="/change-password"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<ChangePassword setAlerts={setAlerts} logout={logout} currentUser={user}/>}/>
                    }/>
 
             {/* Users Page */}

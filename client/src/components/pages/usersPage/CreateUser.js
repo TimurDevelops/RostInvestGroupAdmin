@@ -124,7 +124,7 @@ const CreateUser = ({logout, setAlerts}) => {
 
 CreateUser.propTypes = {
   logout: PropTypes.func.isRequired,
-  setAlerts: PropTypes.func.isRequired,
+  setAlerts: PropTypes.func.isRequired
 };
 
 export default CreateUser;
