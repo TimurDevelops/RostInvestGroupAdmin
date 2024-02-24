@@ -139,7 +139,7 @@ const Categories = ({logout, setAlerts}) => {
           <div className="table-controls">
             <div className="create-item-button">
               <span className="table-controls-icon"><IoMdCreate/></span>
-              <span className="table-controls-text"><Link to={"create-item"}>Создать</Link></span>
+              <span className="table-controls-text"><Link to={"create-category"}>Создать</Link></span>
             </div>
             {/*TODO rename from user and move styles*/}
             <div className={"create-item-button red"}>

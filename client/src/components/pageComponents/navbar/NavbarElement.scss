@@ -15,7 +15,11 @@
   box-sizing: content-box;
 
   font-size: 16px;
-  color: $navbar-light;
+
+  a {
+    color: $navbar-light !important;
+  }
+
   background: $navbar-bg;
 
   // THE CATEGORY TITLE
@@ -30,7 +34,10 @@
 
     &:hover {
       background: $navbar-dark;
-      color: $navbar-light-text;
+
+      a {
+        color: $navbar-light-text !important;
+      }
     }
 
     .navbar-drop-down-title-text {

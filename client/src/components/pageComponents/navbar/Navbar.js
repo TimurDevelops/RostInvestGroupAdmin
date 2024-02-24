@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 
 import NavbarElement from "./NavbarElement";
 
-import "./Navbar.scss"
 import api from "../../../utils/api";
+
+import "./Navbar.scss"
 
 
 const Navbar = () => {
@@ -12,11 +13,16 @@ const Navbar = () => {
   useEffect(() => {
     const getCategories = async () => {
       const res = await api.post("/categories/get-tree");
+      const data = res.data["categories"].map(item => {
+        return {...item, link: `/categories/categories-view/:${item.id}`}
+      })
+
       setNavbarData([
-        {list: [], title: "Не откатегаризованные продукты", id: "products"},
-        {list: [], title: "Не откатегаризованные категории", id: "categories"},
-        {list: [], title: "Пользователи", id: "users"},
-        ...res.data["categories"]])
+        {list: [], title: "Не откатегаризованные продукты", id: "products", link: "/products"},
+        {list: [], title: "Не откатегаризованные категории", id: "categories", link: "/categories"},
+        {list: [], title: "Пользователи", id: "users", link: "/users"},
+        ...data]
+      )
     }
     getCategories().catch((err) => console.error(err))
   }, []);
@@ -26,8 +32,8 @@ const Navbar = () => {
     <div className="navbar-wrapper">
       <ul className="navbar-list">
         {
-          navbarData.map((item, index) =>
-            <NavbarElement list={item.list} title={item.title} key={item.id}/>
+          navbarData.map((item) =>
+            <NavbarElement key={item.id} id={item.id} link={item.link} title={item.title} list={item.list}/>
           )
         }
       </ul>
