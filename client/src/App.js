@@ -18,6 +18,12 @@ import api from "./utils/api";
 import './App.css';
 import './Common.scss';
 import ChangePassword from "./components/pages/usersPage/ChangePassword";
+import Products from "./components/pages/productPage/Products";
+import ProductView from "./components/pages/productPage/ProductView";
+import CreateProduct from "./components/pages/productPage/CreateProduct";
+import Categories from "./components/pages/categoriesPage/Categories";
+import CategoryView from "./components/pages/categoriesPage/CategoryVeiw";
+import CreateCategory from "./components/pages/categoriesPage/CreateCategory";
 
 
 const App = () => {
@@ -80,7 +86,6 @@ const App = () => {
                    element={
                      <Login setAuth={setAuth} setAlerts={setAlerts} setUser={setUser} auth={auth}/>
                    }/>
-
             {/* Edit  */}
             <Route path="/edit-profile"
                    auth={auth}
@@ -89,7 +94,6 @@ const App = () => {
                        auth={auth}
                        component={<EditProfile setAlerts={setAlerts} logout={logout} currentUser={user}/>}/>
                    }/>
-
             {/* Change Password */}
             <Route path="/change-password"
                    auth={auth}
@@ -115,7 +119,7 @@ const App = () => {
                        auth={auth}
                        component={<CreateUser setAlerts={setAlerts} logout={logout}/>}/>
                    }/>
-            {/* Create user page */}
+            {/* View user page */}
             <Route path="/users/user-view/:userId"
                    auth={auth}
                    element={
@@ -124,10 +128,61 @@ const App = () => {
                        component={<UserView setAlerts={setAlerts} logout={logout}/>}/>
                    }/>
 
+
+            {/* Products page */}
+            <Route path="/products"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<Products setAlerts={setAlerts} logout={logout}/>}/>
+                   }/>
+            {/* Products view page */}
+            <Route path="/products/product-view/:productId"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<ProductView setAlerts={setAlerts} logout={logout}/>}/>
+                   }/>
+            {/* Create product page */}
+            <Route path="/products/create-product"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<CreateProduct setAlerts={setAlerts} logout={logout}/>}/>
+                   }/>
+
+
+            {/* Categories page */}
+            <Route path="/categories"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<Categories setAlerts={setAlerts} logout={logout}/>}/>
+                   }/>
+            {/* Category view page */}
+            <Route path="/categories/categories-view/:categoryId"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<CategoryView setAlerts={setAlerts} logout={logout}/>}/>
+                   }/>
+            {/* Create category page */}
+            <Route path="/categories/create-category"
+                   auth={auth}
+                   element={
+                     <PrivateRoute
+                       auth={auth}
+                       component={<CreateCategory setAlerts={setAlerts} logout={logout}/>}/>
+                   }/>
+
             {/* notFoundPage Page */}
             <Route path="/not-found"
                    element={<NotFound/>}/>
-
             {/* Navigation */}
             <Route path="*"
                    element={(
