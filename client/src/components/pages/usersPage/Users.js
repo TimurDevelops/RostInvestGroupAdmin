@@ -147,11 +147,11 @@ const Users = ({logout, setAlerts}) => {
           </div>
 
           <div className="table-controls">
-            <div className="create-user-button">
+            <div className="create-item-button">
               <span className="table-controls-icon"><IoMdCreate/></span>
-              <span className="table-controls-text"><Link to={"create-user"}>Создать</Link></span>
+              <span className="table-controls-text"><Link to={"create-item"}>Создать</Link></span>
             </div>
-            <div className={"create-user-button"}>
+            <div className={"create-item-button red"}>
               <span className="table-controls-icon"><FaDeleteLeft/></span>
               <span className="table-controls-text" onClick={() => {
                 confirmDeleteUsers()

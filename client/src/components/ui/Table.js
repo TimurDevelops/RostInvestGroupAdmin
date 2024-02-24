@@ -6,6 +6,7 @@ import {FaTrashAlt} from "react-icons/fa";
 
 
 import "./Table.scss"
+import {TextField} from "@mui/material";
 
 
 const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
@@ -18,7 +19,7 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
   useEffect(() => {
     setDisplayedData(data.filter(item => {
       for (const value of Object.values(item)) {
-        if (value.lower().includes(value.lower())) return true
+        if (value.toLowerCase().includes(value.toLowerCase())) return true
       }
       return false
     }).sort((a, b) => {
@@ -101,19 +102,9 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
   return (
     <div className="table-wrapper">
 
-      <div className="form-group field">
-        <input type="password" className="form-field" placeholder="Пароль" name="table-search"
-               onChange={e => setFilterValue(e.target.value)}/>
-        <label htmlFor="password" className="form-label">
-          <div className="m-glass">
-            <FaSearch/>
-          </div>
-          <div className="table-search-title">
-            Поиск
-          </div>
-        </label>
+      <div className="form-group field table-search-group-field">
+        <TextField id="standard-basic" label="Поиск...." variant="standard" onChange={e => setFilterValue(e.target.value)}/>
       </div>
-
 
       <div className="table-head">
         {

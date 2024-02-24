@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import {FaUsers} from "react-icons/fa";
 import {Link, useParams} from "react-router-dom";
 import {IoMdCreate} from "react-icons/io";
+import {TextareaAutosize} from "@mui/material";
 
 import PageWrapper from "../../pageComponents/PageWrapper";
+import AlertTypes from "../../ui/AlertTypes";
 
 import api from "../../../utils/api";
 
-import "./UserView.scss"
-import AlertTypes from "../../ui/AlertTypes";
+// import "./UserView.scss"
 
 
 const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
@@ -97,7 +98,7 @@ const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
               </div>
 
               <div className="form-group field">
-                <input type="textarea" className="form-field" placeholder="Описание продукта" name="description"
+                <TextareaAutosize className="form-field" placeholder="Описание продукта" name="description"
                        id="description"
                        value={description}
                        onChange={e => setDescription(e.target.value)} required/>

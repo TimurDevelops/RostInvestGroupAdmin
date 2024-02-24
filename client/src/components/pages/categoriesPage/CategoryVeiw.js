@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
 import PropTypes from "prop-types";
 import {FaUsers} from "react-icons/fa";
-import {Link, useParams} from "react-router-dom";
+import {FaDeleteLeft} from "react-icons/fa6";
 import {IoMdCreate} from "react-icons/io";
-import AlertTypes from "../../ui/AlertTypes";
+import Button from "@mui/material/Button";
 
+import AlertTypes from "../../ui/AlertTypes";
 import PageWrapper from "../../pageComponents/PageWrapper";
+import Table from "../../ui/Table";
+import Dialog from "../../ui/Dialogs";
 
 import api from "../../../utils/api";
 
-import "./UserView.scss"
-import Table from "../../ui/Table";
-import Dialog from "../../ui/Dialogs";
-import Button from "@mui/material/Button";
-import {FaDeleteLeft} from "react-icons/fa6";
+// import "./UserView.scss"
 
 
 const CategoryView = ({logout, setAlerts, currentUser}) => {
@@ -324,7 +324,7 @@ const CategoryView = ({logout, setAlerts, currentUser}) => {
           </div>
           <div className="table-controls">
             {/*TODO rename from user and move styles*/}
-            <div className={"create-user-button"}>
+            <div className={"create-item-button red"}>
               <span className="table-controls-icon"><FaDeleteLeft/></span>
               <span className="table-controls-text" onClick={() => {
                 confirmDeleteCategories()
@@ -344,7 +344,7 @@ const CategoryView = ({logout, setAlerts, currentUser}) => {
           </div>
           <div className="table-controls">
             {/*TODO rename from user and move styles*/}
-            <div className={"create-user-button"}>
+            <div className={"create-item-button red"}>
               <span className="table-controls-icon"><FaDeleteLeft/></span>
               <span className="table-controls-text" onClick={() => {
                 confirmDeleteProducts()
