@@ -120,7 +120,7 @@ def delete_category():
 @check_is_authorised
 def edit_category():
     """
-    Edit user.
+    Edit category.
     """
     token = request.headers.get("Authorization", None)
     token = str.replace(str(token), "Bearer ", "")
@@ -145,3 +145,22 @@ def edit_category():
     db.session.commit()
 
     return {"success": True}, 200
+
+
+@users_blueprint.route("/get-tree", methods=["POST"])
+@error_handler
+@check_is_authorised
+def edit_category():
+    """
+    Get tree of categories.
+    """
+
+    db = DBHandler()
+
+    categories = db.session.query(Category).all()
+
+    for category in categories:
+        category.children = [i for i in categories if i.parent_category_id == category.id]
+
+    return {"success": True, "categories": [category for category in categories if
+                                            category.parent_category_id is None]}, 200
