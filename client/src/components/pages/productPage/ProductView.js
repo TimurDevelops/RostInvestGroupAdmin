@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import {FaUsers} from "react-icons/fa";
 import {Link, useParams} from "react-router-dom";
 import {IoMdCreate} from "react-icons/io";
-import {TextareaAutosize} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Select, TextareaAutosize} from "@mui/material";
+import ReactImagePickerEditor, { ImagePickerConf } from 'react-image-picker-editor';
 
 import PageWrapper from "../../pageComponents/PageWrapper";
 import AlertTypes from "../../ui/AlertTypes";
@@ -13,7 +14,7 @@ import api from "../../../utils/api";
 // import "./UserView.scss"
 
 
-const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
+const ProductView = ({logout, setAlerts}) => {
   const {productId} = useParams();
   const [categories, setCategories] = useState([]);
 
@@ -38,8 +39,7 @@ const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
     e.preventDefault()
     try {
       const res = await editProduct({
-        id: currentProduct.id,
-        userId: currentUser.id,
+        id: productId,
         title,
         description,
         category,
@@ -80,7 +80,7 @@ const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
   return (
     <PageWrapper logout={() => logout()}>
       <div className="section-bg">
-        <section className="section-wrapper">
+        <section className="section-wrapper user-form-section-wrapper">
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
@@ -99,19 +99,26 @@ const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
 
               <div className="form-group field">
                 <TextareaAutosize className="form-field" placeholder="Описание продукта" name="description"
-                       id="description"
-                       value={description}
-                       onChange={e => setDescription(e.target.value)} required/>
+                                  id="description"
+                                  value={description}
+                                  onChange={e => setDescription(e.target.value)} required/>
                 <label htmlFor="description" className="form-label">Описание продукта*</label>
               </div>
 
-              <div className="form-group field">
-                {/*TODO change*/}
-                <input type="text" className="form-field" placeholder="Категория" name="category" id="category"
-                       value={category}
-                       onChange={e => setCategory(e.target.value)}/>
-                <label htmlFor="name" className="form-label">Категория</label>
-              </div>
+              <FormControl style={{minWidth: 300}} variant="standard">
+                <InputLabel id="category-select-label">Категория</InputLabel>
+                <Select
+                  labelId="category-select-label"
+                  id="category-select"
+                  value={category}
+                  label="Age"
+                  onChange={e => setCategory(e.target.value)}
+                >
+                  {
+                    categories.map(item => <MenuItem value={item.id}>item.title</MenuItem>)
+                  }
+                </Select>
+              </FormControl>
 
               <div className="form-group field">
                 <input type="text" className="form-field" placeholder="Картинка" name="productImage" id="productImage"
@@ -159,8 +166,6 @@ const ProductView = ({logout, setAlerts, currentUser, currentProduct}) => {
 ProductView.propTypes = {
   logout: PropTypes.func.isRequired,
   setAlerts: PropTypes.func.isRequired,
-  currentUser: PropTypes.object,
-  currentProduct: PropTypes.object,
 };
 
 export default ProductView;

@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {FaUsers} from "react-icons/fa";
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {IoMdCreate} from "react-icons/io";
 
+import {FormControl, InputLabel, MenuItem, Select, TextareaAutosize} from "@mui/material";
+
 import PageWrapper from "../../pageComponents/PageWrapper";
+import AlertTypes from "../../ui/AlertTypes";
 
 import api from "../../../utils/api";
-import AlertTypes from "../../ui/AlertTypes";
 
 // import "./UserView.scss"
 
 
-const CreateProduct = ({logout, setAlerts, currentUser}) => {
+const CreateProduct = ({logout, setAlerts}) => {
   const [categories, setCategories] = useState([]);
 
   const [title, setTitle] = useState("");
@@ -45,7 +47,6 @@ const CreateProduct = ({logout, setAlerts, currentUser}) => {
     e.preventDefault()
     try {
       const res = await createProduct({
-        id: currentUser.id,
         title,
         description,
         category,
@@ -66,7 +67,7 @@ const CreateProduct = ({logout, setAlerts, currentUser}) => {
   return (
     <PageWrapper logout={() => logout()}>
       <div className="section-bg">
-        <section className="section-wrapper">
+        <section className="section-wrapper user-form-section-wrapper">
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
@@ -85,19 +86,27 @@ const CreateProduct = ({logout, setAlerts, currentUser}) => {
               </div>
 
               <div className="form-group field">
-                <input type="textarea" className="form-field" placeholder="Описание продукта" name="description" id="description"
-                       value={description}
-                       onChange={e => setDescription(e.target.value)} required/>
+                <TextareaAutosize className="form-field" placeholder="Описание продукта" name="description"
+                                  id="description"
+                                  value={description}
+                                  onChange={e => setDescription(e.target.value)} required/>
                 <label htmlFor="description" className="form-label">Описание продукта*</label>
               </div>
 
-              <div className="form-group field">
-                {/*TODO change*/}
-                <input type="text" className="form-field" placeholder="Категория" name="category" id="category"
-                       value={category}
-                       onChange={e => setCategory(e.target.value)}/>
-                <label htmlFor="name" className="form-label">Категория</label>
-              </div>
+              <FormControl style={{minWidth: 300}} variant="standard">
+                <InputLabel id="category-select-label">Категория</InputLabel>
+                <Select
+                  labelId="category-select-label"
+                  id="category-select"
+                  value={category}
+                  label="Age"
+                  onChange={e => setCategory(e.target.value)}
+                >
+                  {
+                    categories.map(item => <MenuItem value={item.id}>item.title</MenuItem>)
+                  }
+                </Select>
+              </FormControl>
 
               <div className="form-group field">
                 <input type="text" className="form-field" placeholder="Картинка" name="productImage" id="productImage"

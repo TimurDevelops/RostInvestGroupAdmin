@@ -8,6 +8,7 @@ import PageWrapper from "../../pageComponents/PageWrapper";
 
 import api from "../../../utils/api";
 import AlertTypes from "../../ui/AlertTypes";
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
 // import "./UserView.scss"
 
@@ -62,7 +63,7 @@ const CreateCategory = ({logout, setAlerts, currentUser}) => {
   return (
     <PageWrapper logout={() => logout()}>
       <div className="section-bg">
-        <section className="section-wrapper">
+        <section className="section-wrapper user-form-section-wrapper">
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
@@ -79,14 +80,20 @@ const CreateCategory = ({logout, setAlerts, currentUser}) => {
                 <label htmlFor="title" className="form-label">Наименование категории*</label>
               </div>
 
-              <div className="form-group field">
-                {/*TODO change*/}
-                <input type="text" className="form-field" placeholder="Категория" name="parentCategory"
-                       id="parentCategory"
-                       value={parentCategory}
-                       onChange={e => setParentCategory(e.target.value)}/>
-                <label htmlFor="parentCategory" className="form-label">Категория</label>
-              </div>
+              <FormControl style={{minWidth: 300}} variant="standard">
+                <InputLabel id="category-select-label">Категория</InputLabel>
+                <Select
+                  labelId="category-select-label"
+                  id="category-select"
+                  value={parentCategory}
+                  label="Age"
+                  onChange={e => setParentCategory(e.target.value)}
+                >
+                  {
+                    categories.map(item => <MenuItem value={item.id}>item.title</MenuItem>)
+                  }
+                </Select>
+              </FormControl>
 
               <div className="form-group field">
                 <input type="text" className="form-field" placeholder="Картинка" name="categoryImage" id="categoryImage"

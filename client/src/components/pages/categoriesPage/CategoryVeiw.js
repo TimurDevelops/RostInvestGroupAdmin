@@ -12,6 +12,7 @@ import Table from "../../ui/Table";
 import Dialog from "../../ui/Dialogs";
 
 import api from "../../../utils/api";
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
 // import "./UserView.scss"
 
@@ -82,8 +83,10 @@ const CategoryView = ({logout, setAlerts, currentUser}) => {
     }
   ]);
   const {categoryId} = useParams();
-  const [subcategories, setSubcategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+
+  const [subcategories, setSubcategories] = useState([]);
   const [deleteCategoriesConfirmDialogOpen, setDeleteCategoriesConfirmDialogOpen] = useState(false);
   const [categoriesForDeletion, setCategoriesForDeletion] = useState([]);
   const [deleteProductsConfirmDialogOpen, setDeleteProductsConfirmDialogOpen] = useState(false);
@@ -229,10 +232,15 @@ const CategoryView = ({logout, setAlerts, currentUser}) => {
     const getCategory = async () => {
       // TODO check if 401 error is working properly
       const res = await api.post("/categories/get-category", {categoryId});
-      const user = res.data["category"]
-      setTitle(user["title"])
-      setParentCategory(user["parent_category_id"])
-      setCategoryImage(user["category_image"])
+      const category = res.data["category"]
+      setTitle(category["title"])
+      setParentCategory(category["parent_category_id"])
+      setCategoryImage(category["category_image"])
+    }
+    const getCategories = async () => {
+      const res = await api.post("/categories/get-categories");
+      const categories = res.data["categories"]
+      setCategories(categories)
     }
     const getSubCategories = async () => {
       const res = await api.post("/categories/get-categories-by-parent", {categoryId});
@@ -244,7 +252,9 @@ const CategoryView = ({logout, setAlerts, currentUser}) => {
       const products = res.data["products"]
       setProducts(products)
     }
+
     getCategory().catch((err) => console.error(err))
+    getCategories().catch((err) => console.error(err))
     getSubCategories().catch((err) => console.error(err))
     getProducts().catch((err) => console.error(err))
   }, []);
@@ -273,7 +283,7 @@ const CategoryView = ({logout, setAlerts, currentUser}) => {
         handleClose={() => setDeleteCategoriesConfirmDialogOpen(false)}
       />
       <div className="section-bg">
-        <section className="section-wrapper">
+        <section className="section-wrapper user-form-section-wrapper">
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
@@ -290,6 +300,21 @@ const CategoryView = ({logout, setAlerts, currentUser}) => {
                        onChange={e => setTitle(e.target.value)} required/>
                 <label htmlFor="title" className="form-label">Наименование категории*</label>
               </div>
+
+              <FormControl style={{minWidth: 300}} variant="standard">
+                <InputLabel id="category-select-label">Категория</InputLabel>
+                <Select
+                  labelId="category-select-label"
+                  id="category-select"
+                  value={parentCategory}
+                  label="Age"
+                  onChange={e => setParentCategory(e.target.value)}
+                >
+                  {
+                    categories.map(item => <MenuItem value={item.id}>item.title</MenuItem>)
+                  }
+                </Select>
+              </FormControl>
 
               <div className="form-group field">
                 {/*TODO change*/}

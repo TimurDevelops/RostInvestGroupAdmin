@@ -58,7 +58,7 @@ const CreateUser = ({logout, setAlerts}) => {
   return (
     <PageWrapper logout={() => logout()}>
       <div className="section-bg">
-        <section className="section-wrapper">
+        <section className="section-wrapper user-form-section-wrapper">
           <div className="section-header">
             <h4 className="section-header-title">
               <span className="section-header-icon"><FaUsers/></span>
