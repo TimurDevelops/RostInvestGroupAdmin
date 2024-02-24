@@ -45,7 +45,7 @@ class Category(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String, nullable=True)
-    parent_category_id: Mapped[int] = mapped_column(Integer, ForeignKey("category"))
+    parent_category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
     category_image: Mapped[str] = mapped_column(String, nullable=True)
     last_editor: Mapped[str] = mapped_column(String, nullable=False)
     create_date: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False, default=func.now())
@@ -63,7 +63,7 @@ class Product(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String, nullable=True)
     description: Mapped[str] = mapped_column(String, nullable=True)
-    parent_category_id: Mapped[int] = mapped_column(Integer, ForeignKey("category"))
+    parent_category_id: Mapped[int] = mapped_column(ForeignKey("category.id"))
     product_image: Mapped[str] = mapped_column(String, nullable=True)
     product_price: Mapped[str] = mapped_column(String, nullable=True)
     last_editor: Mapped[str] = mapped_column(String, nullable=False)

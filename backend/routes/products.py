@@ -10,10 +10,10 @@ from backend.utils.errors import InvalidFieldsException
 from backend.utils.messages import MISSING_REQUIRED_FIELDS_MESSAGE, \
     CATEGORY_DOES_NOT_EXIST_MESSAGE, PRODUCT_DOES_NOT_EXIST_MESSAGE
 
-users_blueprint = Blueprint("products", __name__)
+products_blueprint = Blueprint("products", __name__)
 
 
-@users_blueprint.route("", methods=["POST"])
+@products_blueprint.route("", methods=["POST"])
 @error_handler
 @check_admin_privilege
 @check_is_authorised
@@ -48,7 +48,7 @@ def create_new_product():
     return {"success": True}, 201
 
 
-@users_blueprint.route("/get-products", methods=["POST"])
+@products_blueprint.route("/get-products", methods=["POST"])
 @error_handler
 @check_is_authorised
 def get_products():
@@ -61,7 +61,7 @@ def get_products():
     return {"users": [Product.as_dict(product) for product in products]}, 200
 
 
-@users_blueprint.route("/get-product", methods=["POST"])
+@products_blueprint.route("/get-product", methods=["POST"])
 @error_handler
 @check_is_authorised
 def get_product():
@@ -76,7 +76,7 @@ def get_product():
     return {"product": Product.as_dict(product)}, 200
 
 
-@users_blueprint.route("/get-products-by-parent", methods=["POST"])
+@products_blueprint.route("/get-products-by-parent", methods=["POST"])
 @error_handler
 @check_is_authorised
 def get_products_by_parent():
@@ -99,7 +99,7 @@ def delete_image(image_path):
     print(image_path)
 
 
-@users_blueprint.route("", methods=["DELETE"])
+@products_blueprint.route("", methods=["DELETE"])
 @error_handler
 @check_is_authorised
 def delete_products():
@@ -123,7 +123,7 @@ def delete_products():
     return {"success": True}, 200
 
 
-@users_blueprint.route("/edit-product", methods=["POST"])
+@products_blueprint.route("/edit-product", methods=["POST"])
 @error_handler
 @check_is_authorised
 def edit_product():

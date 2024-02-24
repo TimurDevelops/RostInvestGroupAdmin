@@ -1,92 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import NavbarElement from "./NavbarElement";
 
 import "./Navbar.scss"
+import api from "../../../utils/api";
 
 
 const Navbar = () => {
+  const [navbarData, setNavbarData] = useState([])
 
-  // TODO call to retrieve the shit
-  const data = [{
-    title: "Categories",
-    list: ["Categories", "Edit", "View", "Navigate"]
-  }, {
-    title: "Edit",
-    list: ["Categories", "Navigate", "Edit", "View"]
-  }, {
-    title: "Navigate",
-    list: ["Categories", "View", "Navigate", "Edit"]
-  }, {
-    title: "Help",
-    list: ["Categories", "Edit", "View", "Navigate"]
-  }, {
-    title: "File",
-    list: ["Navigate", "Categories", "Edit", "View"]
-  }, {
-    title: "File",
-    list: [{
-      title: "Categories",
-      list: ["Categories", "Edit", "View", "Navigate"]
-    }, {
-      title: "Edit",
-      list: ["Categories", "Navigate", "Edit", "View"]
-    }, {
-      title: "Navigate",
-      list: ["Categories", "View", "Navigate", "Edit"]
-    }]
-  }, {
-    title: "Categories",
-    list: ["Categories", "Edit", "Navigate"]
-  }, {
-    title: "Edit",
-    list: ["Categories", "Navigate", "Edit", "View"]
-  }, {
-    title: "Navigate",
-    list: ["Categories", "View", "Navigate", "Edit"]
-  }, {
-    title: "Help",
-    list: ["Categories", "Edit", "Navigate"]
-  }, {
-    title: "File",
-    list: ["Navigate", "Categories"]
-  }, {
-    title: "Categories",
-    list: ["Categories", "Edit", "View", "Navigate", "Edit", "View", "Navigate"]
-  }, {
-    title: "Edit",
-    list: ["Categories", "Navigate", "Edit", "View"]
-  }, {
-    title: "Navigate",
-    list: ["Categories", "View", "Navigate", "Edit", "Navigate", "Edit", "Navigate", "Edit", "Navigate", "Edit"]
-  }, {
-    title: "Help",
-    list: ["Categories", "Edit", "View", "Navigate", "Edit", "View", "Navigate", "Edit", "View", "Navigate"]
-  }, {
-    title: "File",
-    list: ["Navigate", "Categories", "Edit", "View", "View"]
-  }, {
-    title: "Categories",
-    list: ["Categories", "Edit", "View", "Navigate"]
-  }, {
-    title: "Edit",
-    list: ["Categories", "Navigate", "Edit", "View"]
-  }, {
-    title: "Navigate",
-    list: ["Categories", "View", "Navigate", "Edit"]
-  }, {
-    title: "Help",
-    list: ["Categories", "Edit", "View", "Navigate"]
-  }]
+  useEffect(() => {
+    const getCategories = async () => {
+      const res = await api.post("/categories/get-tree");
+      setNavbarData([
+        {list: [], title: "Не откатегаризованные продукты", id: "products"},
+        {list: [], title: "Не откатегаризованные категории", id: "categories"},
+        {list: [], title: "Пользователи", id: "users"},
+        ...res.data["categories"]])
+    }
+    getCategories().catch((err) => console.error(err))
+  }, []);
 
-  // TODO fix the key to be an id
 
   return (
     <div className="navbar-wrapper">
       <ul className="navbar-list">
         {
-          data.map((item, index) =>
-            <NavbarElement list={item.list} title={item.title} key={index.toString() + item.title}/>
+          navbarData.map((item, index) =>
+            <NavbarElement list={item.list} title={item.title} key={item.id}/>
           )
         }
       </ul>

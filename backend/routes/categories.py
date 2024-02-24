@@ -10,10 +10,10 @@ from backend.utils.errors import InvalidFieldsException
 from backend.utils.messages import USER_DOES_NOT_EXIST_MESSAGE, MISSING_REQUIRED_FIELDS_MESSAGE, \
     CATEGORY_DOES_NOT_EXIST_MESSAGE
 
-users_blueprint = Blueprint("categories", __name__)
+categories_blueprint = Blueprint("categories", __name__)
 
 
-@users_blueprint.route("", methods=["POST"])
+@categories_blueprint.route("", methods=["POST"])
 @error_handler
 @check_admin_privilege
 @check_is_authorised
@@ -41,7 +41,7 @@ def create_new_category():
     return {"success": True}, 201
 
 
-@users_blueprint.route("/get-categories", methods=["POST"])
+@categories_blueprint.route("/get-categories", methods=["POST"])
 @error_handler
 @check_is_authorised
 def get_categories():
@@ -54,7 +54,7 @@ def get_categories():
     return {"categories": [Category.as_dict(category) for category in categories]}, 200
 
 
-@users_blueprint.route("/get-category", methods=["POST"])
+@categories_blueprint.route("/get-category", methods=["POST"])
 @error_handler
 @check_is_authorised
 def get_category():
@@ -69,7 +69,7 @@ def get_category():
     return {"category": Category.as_dict(category)}, 200
 
 
-@users_blueprint.route("/get-categories-by-parent", methods=["POST"])
+@categories_blueprint.route("/get-categories-by-parent", methods=["POST"])
 @error_handler
 @check_is_authorised
 def get_categories_by_parent():
@@ -88,7 +88,7 @@ def delete_image(image_path):
     print(image_path)
 
 
-@users_blueprint.route("", methods=["DELETE"])
+@categories_blueprint.route("", methods=["DELETE"])
 @error_handler
 @check_is_authorised
 def delete_category():
@@ -115,7 +115,7 @@ def delete_category():
     return {"success": True}, 200
 
 
-@users_blueprint.route("/edit-category", methods=["POST"])
+@categories_blueprint.route("/edit-category", methods=["POST"])
 @error_handler
 @check_is_authorised
 def edit_category():
@@ -147,10 +147,10 @@ def edit_category():
     return {"success": True}, 200
 
 
-@users_blueprint.route("/get-tree", methods=["POST"])
+@categories_blueprint.route("/get-tree", methods=["POST"])
 @error_handler
 @check_is_authorised
-def edit_category():
+def get_category_tree():
     """
     Get tree of categories.
     """
