@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import {FaCheck, FaBan, FaSearch} from "react-icons/fa";
-import {FaTrashAlt} from "react-icons/fa";
+import {TextField} from "@mui/material";
 
+import {FaCheck, FaBan} from "react-icons/fa";
+import {FaTrashAlt} from "react-icons/fa";
+import {FaCaretDown} from "react-icons/fa";
+import {FaCaretUp} from "react-icons/fa";
 
 import "./Table.scss"
-import {TextField} from "@mui/material";
 
 
 const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
@@ -32,10 +34,21 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
   }, [data, sortingColumn, filterValue])
 
   const changeSortingOrder = (column) => {
-    setSortingColumn({
-      id: column.id,
-      type: column.id === sortingColumn.id ? sortingColumn.type === "ASC" ? "DES" : "ASC" : "ASC"
-    })
+    console.log(sortingColumn)
+    let newSortingColumn = {id: "", order: "ASC"}
+    if (column.id === sortingColumn.id) {
+      if (sortingColumn.order === "ASC") {
+        console.log("here")
+        newSortingColumn = {id: column.id, order: "DES"}
+
+      } else if (sortingColumn.order === "DES") {
+        newSortingColumn = {id: "", order: "ASC"}
+      }
+    } else {
+      newSortingColumn = {id: column.id, order: "ASC"}
+    }
+
+    setSortingColumn(newSortingColumn)
   }
 
   const handleSelectAll = () => {
@@ -90,8 +103,8 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
           <div className="sort-order-arrows" onClick={() => changeSortingOrder(column)}>
             {
               column.id === sortingColumn.id ?
-                sortingColumn.type === "ASC" ? "DOWN" : "UP"
-                : "UP DOWN"
+                sortingColumn.order === "ASC" ? <FaCaretDown/> : <FaCaretUp/>
+                : <span className={"up-down-wrapper"}><FaCaretUp/><FaCaretDown/></span>
             }
           </div>
         </div>
@@ -103,7 +116,8 @@ const Table = ({data, columns, selectItem, selectAll, deleteItem}) => {
     <div className="table-wrapper">
 
       <div className="form-group field table-search-group-field">
-        <TextField id="standard-basic" label="Поиск...." variant="standard" onChange={e => setFilterValue(e.target.value)}/>
+        <TextField id="standard-basic" label="Поиск...." variant="standard"
+                   onChange={e => setFilterValue(e.target.value)}/>
       </div>
 
       <div className="table-head">
